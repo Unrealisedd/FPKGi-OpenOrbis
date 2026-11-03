@@ -129,6 +129,15 @@ void test_url_policy() {
     expect(!fpkgi::validate_http_url("https://example.test/bad%2.pkg", error), "invalid percent escape is rejected");
     error.clear();
     expect(!fpkgi::validate_http_url("https://[:::]/pkg.pkg", error), "malformed IPv6 host is rejected");
+    error.clear();
+    expect(!fpkgi::validate_http_url("https://[1:::2]/pkg.pkg", error), "triple-colon IPv6 host is rejected");
+    error.clear();
+    expect(!fpkgi::validate_http_url("https://[1::2:]/pkg.pkg", error), "single trailing IPv6 colon is rejected");
+    error.clear();
+    expect(!fpkgi::validate_http_url("https://[:1::2]/pkg.pkg", error), "single leading IPv6 colon is rejected");
+    error.clear();
+    expect(fpkgi::validate_http_url("https://[::ffff:192.0.2.1]/pkg.pkg", error),
+           "compressed IPv6 host with IPv4 tail is accepted");
 
     std::string resolved;
     error.clear();

@@ -111,20 +111,17 @@ bool valid_ipv4_host(const std::string& host) {
     return groups == 4;
 }
 
-bool valid_ipv6_host(const std::string& host) {
-    if (host.find(":::") != std::string::npos) return false;
-    const size_t compression = host.find("::");
-    if (compression != std::string::npos && host.find("::", compression + 2) != std::string::npos) return false;
-    int groups = 0;
+bool count_ipv6_groups(const std::string& part, bool allow_ipv4_tail, int& groups) {
+    if (part.empty()) return true;
     size_t begin = 0;
-    while (begin <= host.size()) {
-        const size_t colon = host.find(':', begin);
-        const size_t end = colon == std::string::npos ? host.size() : colon;
-        const std::string group = host.substr(begin, end - begin);
-        if (group.empty()) {
-            if (compression == std::string::npos) return false;
-        } else if (group.find('.') != std::string::npos) {
-            if (colon != std::string::npos || !valid_ipv4_host(group)) return false;
+    for (;;) {
+        const size_t colon = part.find(':', begin);
+        const size_t end = colon == std::string::npos ? part.size() : colon;
+        if (end == begin) return false;
+        const std::string group = part.substr(begin, end - begin);
+        if (group.find('.') != std::string::npos) {
+            if (!allow_ipv4_tail || colon != std::string::npos || !valid_ipv4_host(group))
+                return false;
             groups += 2;
         } else {
             if (group.size() > 4) return false;
@@ -132,10 +129,25 @@ bool valid_ipv6_host(const std::string& host) {
                 if (!std::isxdigit(static_cast<unsigned char>(group[i]))) return false;
             ++groups;
         }
-        if (colon == std::string::npos) break;
+        if (colon == std::string::npos) return true;
         begin = colon + 1;
     }
-    return compression == std::string::npos ? groups == 8 : groups < 8;
+}
+
+bool valid_ipv6_host(const std::string& host) {
+    const size_t compression = host.find("::");
+    if (compression == std::string::npos) {
+        int groups = 0;
+        return count_ipv6_groups(host, true, groups) && groups == 8;
+    }
+    if (host.find("::", compression + 2) != std::string::npos) return false;
+
+    int groups = 0;
+    const std::string left = host.substr(0, compression);
+    const std::string right = host.substr(compression + 2);
+    return count_ipv6_groups(left, false, groups) &&
+           count_ipv6_groups(right, true, groups) &&
+           groups < 8;
 }
 
 bool parse_url_parts(const std::string& url, UrlParts& parts, std::string& error) {

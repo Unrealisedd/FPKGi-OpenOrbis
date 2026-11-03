@@ -89,6 +89,17 @@ class CatalogValidatorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             VALIDATOR.validate_document({"DATA": oversized})
 
+    def test_json_resource_limits_are_enforced(self) -> None:
+        nested: object = 0
+        for _ in range(VALIDATOR.MAX_JSON_DEPTH + 1):
+            nested = [nested]
+        with self.assertRaises(ValueError):
+            VALIDATOR.validate_document({"DATA": nested})
+        with self.assertRaises(ValueError):
+            VALIDATOR.validate_document({
+                "DATA": [None] * VALIDATOR.MAX_JSON_NODES,
+            })
+
     def test_uppercase_sha_is_accepted(self) -> None:
         VALIDATOR.validate_document({"DATA": {
             "https://example.test/a.pkg": entry(sha256="A" * 64),

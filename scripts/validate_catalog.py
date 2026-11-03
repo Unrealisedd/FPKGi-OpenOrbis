@@ -17,6 +17,8 @@ DECIMAL_RE = re.compile(r"^[0-9]+$")
 MAX_UINT64 = (1 << 64) - 1
 MAX_URL = 2048
 MAX_ITEMS = 4096
+MAX_JSON_DEPTH = 16
+MAX_JSON_NODES = 65536
 ALLOWED_FIELDS = {
     "title_id",
     "region",
@@ -43,13 +45,28 @@ def reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
         result[key] = value
     return result
 
+def enforce_json_limits(document: Any) -> None:
+    nodes = 0
+    stack: list[tuple[Any, int]] = [(document, 0)]
+    while stack:
+        value, parent_depth = stack.pop()
+        nodes += 1
+        if nodes > MAX_JSON_NODES:
+            fail(f"JSON contains more than {MAX_JSON_NODES} values")
+        if isinstance(value, (dict, list)):
+            depth = parent_depth + 1
+            if depth > MAX_JSON_DEPTH:
+                fail(f"JSON nesting exceeds {MAX_JSON_DEPTH} container levels")
+            children = value.values() if isinstance(value, dict) else value
+            stack.extend((child, depth) for child in children)
+
 
 def bounded_text(value: Any, label: str, maximum: int, *, nullable: bool = False) -> str | None:
     if value is None and nullable:
         return None
     if not isinstance(value, str):
         fail(f"{label} must be a string" + (" or null" if nullable else ""))
-    if not value or len(value.encode("utf-8")) > maximum or value.isspace():
+    if not value or len(value.encode("utf-8")) > maximum or all(character in " \t" for character in value):
         fail(f"{label} must be 1-{maximum} UTF-8 bytes")
     if any(ord(character) < 0x20 or ord(character) == 0x7F for character in value):
         fail(f"{label} contains a control character")
@@ -110,6 +127,7 @@ def parse_size(value: Any, label: str) -> int:
 
 
 def validate_document(document: Any) -> None:
+    enforce_json_limits(document)
     if not isinstance(document, dict) or set(document) != {"DATA"}:
         fail("catalog root must contain only DATA")
     data = document["DATA"]
@@ -167,7 +185,7 @@ if __name__ == "__main__":
     target = Path(sys.argv[1] if len(sys.argv) > 1 else "catalog/catalog.json")
     try:
         validate(target)
-    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as exc:
+    except (OSError, UnicodeError, json.JSONDecodeError, RecursionError, ValueError) as exc:
         print(f"catalog validation failed: {exc}", file=sys.stderr)
         raise SystemExit(1)
     print(f"catalog OK: {target}")
