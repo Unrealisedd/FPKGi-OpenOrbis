@@ -27,7 +27,7 @@ int32_t fpkgiSslTerm(int32_t ssl_context) __asm__("sceSslTerm");
 namespace fpkgi {
 namespace {
 
-const char* kUserAgent = "FPKGi-Native/1.01 (OpenOrbis PS4 Homebrew)";
+const char* kUserAgent = "FPKGi-Native/1.02 (OpenOrbis PS4 Homebrew)";
 const char* kCaBundlePath = "/app0/assets/cacert.pem";
 const size_t kNetPoolSize = 64 * 1024;
 const size_t kSslPoolSize = 1024 * 1024;

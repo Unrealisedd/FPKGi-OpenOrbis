@@ -6,6 +6,7 @@
 
 #include <SDL2/SDL.h>
 #include <orbis/libkernel.h>
+#include <orbis/SystemService.h>
 
 #include <algorithm>
 #include <cerrno>
@@ -98,15 +99,40 @@ bool ensure_private_directory(const char* path, std::string& error) {
         error = std::string("cannot create ") + path + ": " + std::strerror(errno);
         return false;
     }
-    struct stat info;
-    if (lstat(path, &info) != 0 || !S_ISDIR(info.st_mode)) {
-        error = std::string(path) + " is not a real directory";
+
+    // OpenOrbis PS4 lstat delegates to fstatat, whose PS4 backend returns ENOSYS.
+    // A no-follow directory descriptor preserves the same validation without that path.
+    const int directory = open(path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW);
+    if (directory < 0) {
+        const int open_error = errno;
+        error = std::string("cannot securely open ") + path + ": " + std::strerror(open_error);
         return false;
     }
-    if (chmod(path, 0700) != 0) {
-        error = std::string("cannot secure ") + path + ": " + std::strerror(errno);
+
+    OrbisKernelStat info;
+    std::memset(&info, 0, sizeof(info));
+    const int32_t stat_result = sceKernelFstat(directory, &info);
+    if (stat_result != 0) {
+        char code[16];
+        std::snprintf(code, sizeof(code), "0X%08X", static_cast<uint32_t>(stat_result));
+        close(directory);
+        error = std::string("cannot inspect directory ") + path + ": " + code;
         return false;
     }
+    if (!S_ISDIR(info.st_mode)) {
+        close(directory);
+        error = std::string(path) + " is not a directory";
+        return false;
+    }
+    const int32_t chmod_result = sceKernelFchmod(directory, 0700);
+    if (chmod_result != 0) {
+        char code[16];
+        std::snprintf(code, sizeof(code), "0X%08X", static_cast<uint32_t>(chmod_result));
+        close(directory);
+        error = std::string("cannot secure ") + path + ": " + code;
+        return false;
+    }
+    close(directory);
     return true;
 }
 
@@ -255,9 +281,13 @@ void refresh_catalog(SharedState* state) {
     }
     boot_trace("CATALOG_SAVE_COMPLETE");
 
+    const size_t updated_count = parsed.size();
+    std::ostringstream updated_status;
+    updated_status << "REMOTE CATALOG VALIDATED: " << updated_count
+                   << (updated_count == 1 ? " PACKAGE" : " PACKAGES");
     pthread_mutex_lock(&state->mutex);
     state->items.swap(parsed);
-    state->status = "CATALOG UPDATED";
+    state->status = updated_status.str();
     state->current = state->total = 0;
     state->last_error_code = 0;
     pthread_mutex_unlock(&state->mutex);
@@ -474,8 +504,8 @@ void render(SDL_Renderer* renderer, SharedState& state, int selected) {
     pthread_mutex_unlock(&state.mutex);
 
     if (items.empty()) {
-        fpkgi::draw_text(renderer, 120, 260, 5, "NO PACKAGES IN THE VALIDATED CATALOG", white);
-        fpkgi::draw_text(renderer, 120, 330, 3, "PRESS TRIANGLE TO REFRESH THE REMOTE CATALOG", muted);
+        fpkgi::draw_text(renderer, 120, 260, 5, "NO AUTHORIZED PACKAGES ARE PUBLISHED", white);
+        fpkgi::draw_text(renderer, 120, 330, 3, "TRIANGLE REVALIDATES THE MAINTAINED REMOTE CATALOG", muted);
     } else {
         const int visible = 10;
         int first = std::max(0, selected - visible + 1);
@@ -527,7 +557,7 @@ void render(SDL_Renderer* renderer, SharedState& state, int selected) {
 int main(int, char**) {
     setvbuf(stdout, 0, _IONBF, 0);
     umask(0077);
-    boot_trace("ENTRY", "VERSION 1.01");
+    boot_trace("ENTRY", "VERSION 1.02");
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
         boot_trace("SDL_INIT_FAILED", SDL_GetError());
@@ -587,8 +617,7 @@ int main(int, char**) {
         boot_trace("STORAGE_FAILED", storage_error.c_str());
     }
 
-    bool running = true;
-    while (running) {
+    for (;;) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             bool up = false;
@@ -623,7 +652,16 @@ int main(int, char**) {
             if (down && count) selected = (selected + 1) % count;
             if (refresh && !busy) start_job(state, JobRefresh, 0);
             if (choose && count && !busy) start_job(state, JobInstall, &chosen);
-            if (quit && !busy) running = false;
+            if (quit && !busy) {
+                boot_trace("EXIT_REQUESTED");
+                const int32_t exit_result = sceSystemServiceLoadExec("exit", 0);
+                char exit_detail[32];
+                std::snprintf(exit_detail, sizeof(exit_detail), "0X%08X",
+                              static_cast<uint32_t>(exit_result));
+                boot_trace("EXIT_RETURNED", exit_detail);
+                set_status(&state, std::string("SYSTEM EXIT REQUEST RETURNED: ") + exit_detail,
+                           false, exit_result);
+            }
         }
 
         pthread_mutex_lock(&state.mutex);
@@ -637,10 +675,4 @@ int main(int, char**) {
         SDL_Delay(16);
     }
 
-    boot_trace("NORMAL_EXIT");
-    if (joystick) SDL_JoystickClose(joystick);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    return 0;
 }

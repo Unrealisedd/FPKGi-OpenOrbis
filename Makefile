@@ -1,6 +1,6 @@
 # FPKGi Native - OpenOrbis PS4 package build
 TITLE       := FPKGi Native
-VERSION     := 1.01
+VERSION     := 1.02
 TITLE_ID    := FPKG00001
 CONTENT_ID  := IV0000-FPKG00001_00-FPKGINATIVE00001
 OUTPUT_PKG  := FPKGi-Native-v$(VERSION).pkg
@@ -24,8 +24,9 @@ CXX         := /usr/local/opt/llvm/bin/clang++
 LD          := /usr/local/opt/llvm/bin/ld.lld
 endif
 
-LIBS := -lc -lkernel -lc++ -lSceUserService -lSceSysmodule -lSceNet -lSceSsl -lSceHttp \
-        -lSceAppInstUtil -lSceBgft -lSceVideoOut -lSceAudioOut -lScePad -lSDL2
+LIBS := -lc -lkernel -lc++ -lSceUserService -lSceSystemService -lSceSysmodule \
+        -lSceNet -lSceSsl -lSceHttp -lSceAppInstUtil -lSceBgft -lSceVideoOut \
+        -lSceAudioOut -lScePad -lSDL2
 CFLAGS   := --target=x86_64-pc-freebsd12-elf -fPIC -funwind-tables -c -DORBIS -D_GNU_SOURCE \
             -isysroot $(TOOLCHAIN) -isystem $(TOOLCHAIN)/include
 CXXFLAGS := $(CFLAGS) -std=c++11 -MMD -MP -isystem $(TOOLCHAIN)/include/c++/v1

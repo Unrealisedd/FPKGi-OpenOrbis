@@ -81,28 +81,28 @@ jobs:
               export DEBIAN_FRONTEND=noninteractive
               apt-get update -qq
               apt-get install -y --no-install-recommends make libicu66 libssl1.1 ca-certificates python3
-              make FPKGi-Native-v1.01.pkg
-              /opt/openorbis/bin/linux/PkgTool.Core pkg_validate --verbose FPKGi-Native-v1.01.pkg
+              make FPKGi-Native-v1.02.pkg
+              /opt/openorbis/bin/linux/PkgTool.Core pkg_validate --verbose FPKGi-Native-v1.02.pkg
             ' 2>&1 | tee fpkgi-package.log
-          test -s FPKGi-Native-v1.01.pkg
-          sha256sum --binary FPKGi-Native-v1.01.pkg > FPKGi-Native-v1.01.pkg.sha256
-          sha256sum --check --strict FPKGi-Native-v1.01.pkg.sha256
+          test -s FPKGi-Native-v1.02.pkg
+          sha256sum --binary FPKGi-Native-v1.02.pkg > FPKGi-Native-v1.02.pkg.sha256
+          sha256sum --check --strict FPKGi-Native-v1.02.pkg.sha256
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: FPKGi-Native-v1.01-PS4
+          name: FPKGi-Native-v1.02-PS4
           path: |
             eboot.bin
-            FPKGi-Native-v1.01.pkg
-            FPKGi-Native-v1.01.pkg.sha256
+            FPKGi-Native-v1.02.pkg
+            FPKGi-Native-v1.02.pkg.sha256
           if-no-files-found: error
 
       - name: Upload diagnostics on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: FPKGi-Native-v1.01-build-diagnostics
+          name: FPKGi-Native-v1.02-build-diagnostics
           path: |
             fpkgi-compile.log
             fpkgi-package.log
