@@ -20,6 +20,8 @@ https://raw.githubusercontent.com/Unrealisedd/FPKGi-OpenOrbis/main/catalog/catal
 
 Validated catalog cache and downloads use `/data/FPKGi`. A download is written to a `.part` file, bounded by the declared size, and renamed to `.pkg` only after exact size, `7F 43 4E 54` magic, and optional SHA-256 verification. Failed or ambiguous transfers/installations retain local data for inspection. See [docs/catalog.md](docs/catalog.md).
 
+HTTPS validation uses the pinned Mozilla CA root bundle in `assets/cacert.pem`; automatic redirects are disabled so every redirect is revalidated and HTTPS-to-HTTP downgrade is rejected. The bundle SHA-256 is `a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505`.
+
 ## Host tests
 
 Requirements: Python 3.10+ and a C++11 compiler.
@@ -58,4 +60,4 @@ The runtime requires the privileged AppInstUtil and BGFT services exposed by a c
 
 ## License and attribution
 
-FPKGi Native is licensed under GNU GPL v2.0; see [LICENSE](LICENSE). Native source portions were derived from the MIT-licensed OrbisShelf project; its preserved notice is in [LICENSES/OrbisShelf-MIT.txt](LICENSES/OrbisShelf-MIT.txt). OpenOrbis and LibOrbisPkg provide the open toolchain and packaging implementation used by the build. See [NOTICE](NOTICE).
+FPKGi Native is licensed under GNU GPL v2.0; see [LICENSE](LICENSE). Native source portions were derived from the MIT-licensed OrbisShelf project; its preserved notice is in [LICENSES/OrbisShelf-MIT.txt](LICENSES/OrbisShelf-MIT.txt). The packaged Mozilla CA root bundle is under MPL 2.0; see [LICENSES/Mozilla-CA-MPL-2.0.txt](LICENSES/Mozilla-CA-MPL-2.0.txt). OpenOrbis and LibOrbisPkg provide the open toolchain and packaging implementation used by the build. See [NOTICE](NOTICE).

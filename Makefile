@@ -34,13 +34,14 @@ LDFLAGS  := -m elf_x86_64 -pie --script $(TOOLCHAIN)/link.x --eh-frame-hdr \
 
 CPPFILES := $(wildcard $(PROJDIR)/*.cpp)
 OBJS     := $(patsubst $(PROJDIR)/%.cpp,$(INTDIR)/%.o,$(CPPFILES))
-PACKAGE_ASSETS := catalog.json
+PACKAGE_ASSETS := catalog.json assets/cacert.pem
 RUNTIME_MODULES := sce_module/libSceFios2.prx sce_module/libc.prx
 PACKAGE_FILES := eboot.bin sce_sys/about/right.sprx sce_sys/param.sfo sce_sys/icon0.png \
                  $(RUNTIME_MODULES) $(PACKAGE_ASSETS)
 MODULE_DATA := $(TOOLCHAIN)/src/modules
 HOST_TEST := $(INTDIR)/host-contract-tests
-HOST_TEST_SOURCES := tests/contract_tests.cpp src/catalog.cpp src/package_verify.cpp src/sha256.cpp
+HOST_TEST_SOURCES := tests/contract_tests.cpp src/catalog.cpp src/package_verify.cpp \
+                     src/sha256.cpp src/pem_bundle.cpp
 
 .PHONY: all clean prepare validate host-tests
 all: validate $(OUTPUT_PKG)
@@ -52,10 +53,11 @@ host-tests: $(HOST_TEST)
 	$(HOST_TEST)
 	python3 -m unittest discover -s tests -p 'test_*.py'
 
-$(HOST_TEST): $(HOST_TEST_SOURCES) src/catalog.hpp src/mini_json.hpp src/package_verify.hpp src/sha256.hpp | $(INTDIR)
+$(HOST_TEST): $(HOST_TEST_SOURCES) src/catalog.hpp src/mini_json.hpp src/package_verify.hpp \
+              src/sha256.hpp src/pem_bundle.hpp | $(INTDIR)
 	$(HOST_CXX) -std=c++11 -Wall -Wextra -Werror -Isrc -o $@ $(HOST_TEST_SOURCES)
 
-prepare: sce_sys/about/right.sprx sce_sys/icon0.png $(RUNTIME_MODULES) catalog.json
+prepare: sce_sys/about/right.sprx sce_sys/icon0.png $(RUNTIME_MODULES) $(PACKAGE_ASSETS)
 
 catalog.json: catalog/catalog.json
 	cp $< $@

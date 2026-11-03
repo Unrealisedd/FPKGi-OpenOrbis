@@ -18,7 +18,8 @@ public:
                  int32_t& task_id, std::string& package_title_id,
                  std::string& error, int32_t& error_code);
     bool progress(int32_t task_id, uint64_t& transferred, uint64_t& total,
-                  int32_t& task_error, std::string& error, int32_t& error_code);
+                  bool& completed, int32_t& task_error, std::string& error,
+                  int32_t& error_code);
     bool query_installation(const std::string& title_id, bool& exists, bool& updating,
                             std::string& error, int32_t& error_code);
 

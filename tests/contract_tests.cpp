@@ -1,5 +1,6 @@
 #include "catalog.hpp"
 #include "package_verify.hpp"
+#include "pem_bundle.hpp"
 
 #include <cstdio>
 #include <fstream>
@@ -112,6 +113,38 @@ void test_canonical_filename() {
     expect(filename.compare(0, 10, "FPKG00001_") == 0, "canonical filename remains bound to title ID");
 }
 
+void test_pem_bundle() {
+    const std::string valid =
+        "Mozilla bundle comments\n"
+        "-----BEGIN CERTIFICATE-----\n"
+        "QUJD\n"
+        "-----END CERTIFICATE-----\n";
+    std::vector<std::string> certificates;
+    std::string error;
+    expect(fpkgi::parse_pem_bundle(valid, certificates, error),
+           "bounded PEM certificate bundle parses");
+    expect(certificates.size() == 1 &&
+               certificates[0] == "-----BEGIN CERTIFICATE-----\r\nQUJD\r\n-----END CERTIFICATE-----\r\n",
+           "PEM certificate is normalized for native SSL");
+
+    std::string packaged_bundle;
+    error.clear();
+    const bool packaged_ok =
+        fpkgi::load_text_file("assets/cacert.pem", packaged_bundle, error) &&
+        fpkgi::parse_pem_bundle(packaged_bundle, certificates, error);
+    expect(packaged_ok, "packaged Mozilla CA bundle parses");
+    expect(packaged_ok && certificates.size() >= 100,
+           "packaged Mozilla CA bundle contains the expected root set");
+
+    error.clear();
+    expect(!fpkgi::parse_pem_bundle("-----BEGIN CERTIFICATE-----\nQUJD\n",
+                                     certificates, error),
+           "incomplete PEM certificate is rejected");
+    error.clear();
+    expect(!fpkgi::parse_pem_bundle("-----END CERTIFICATE-----\n", certificates, error),
+           "unexpected PEM end marker is rejected");
+}
+
 void test_package_verification() {
     const char* path = "build/contract-test.pkg";
     const unsigned char payload[] = {
@@ -152,6 +185,7 @@ int main() {
     test_catalog_contract();
     test_url_policy();
     test_canonical_filename();
+    test_pem_bundle();
     test_package_verification();
     if (failures) {
         std::cerr << failures << " contract test(s) failed\n";

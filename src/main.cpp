@@ -260,8 +260,10 @@ void install_package(SharedState* state, const CatalogItem& item) {
     for (int poll = 0; poll < kInstallPollLimit; ++poll) {
         uint64_t transferred = 0;
         uint64_t total = 0;
+        bool bgft_completed = false;
         int32_t task_error = 0;
-        if (!installer.progress(task_id, transferred, total, task_error, error, error_code)) {
+        if (!installer.progress(task_id, transferred, total, bgft_completed, task_error,
+                                error, error_code)) {
             set_status(state, "BGFT PROGRESS FAILED - PKG KEPT: " + error, false, error_code);
             return;
         }
@@ -277,7 +279,7 @@ void install_package(SharedState* state, const CatalogItem& item) {
             set_status(state, "INSTALL CHECK FAILED - PKG KEPT: " + error, false, error_code);
             return;
         }
-        if (exists && !updating) {
+        if (bgft_completed && exists && !updating) {
             ++stable_polls;
             if (stable_polls >= kInstallStablePolls) {
                 if (remove(pkg_path.c_str()) != 0) {

@@ -24,6 +24,7 @@ private:
     int net_pool_;
     int ssl_context_;
     int http_context_;
+    void* trust_store_;
 };
 
 } // namespace fpkgi

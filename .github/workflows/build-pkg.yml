@@ -14,6 +14,7 @@ jobs:
     env:
       OPENORBIS_URL: https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/releases/download/v0.5.4/toolchain-llvm-18.tar.gz
       OPENORBIS_SHA256: 3c7cd5bb593ca74fa1c13fd59f3938dc0fc07985167f7275063019e63abe4526
+      CA_BUNDLE_SHA256: a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,6 +29,7 @@ jobs:
       - name: Run host contract tests and validate empty catalog
         run: |
           make HOST_CXX=g++ host-tests
+          printf '%s  %s\n' "$CA_BUNDLE_SHA256" assets/cacert.pem | sha256sum --check --strict
           python3 scripts/validate_catalog.py catalog/catalog.json
           python3 - <<'PY'
           import json

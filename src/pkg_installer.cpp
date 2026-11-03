@@ -5,10 +5,70 @@
 #include <orbis/UserService.h>
 #include <orbis/libkernel.h>
 
+#include <cstddef>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
+
+namespace {
+
+// OpenOrbis v0.5.4 declares these BGFT fields as 32-bit, but the PS4 ABI uses
+// 64-bit sizes and progress counters. Keep the wire layout explicit.
+struct NativeBgftDownloadParam {
+    int32_t userId;
+    int32_t entitlementType;
+    const char* id;
+    const char* contentUrl;
+    const char* contentExUrl;
+    const char* contentName;
+    const char* iconPath;
+    const char* skuId;
+    int32_t option;
+    const char* playgoScenarioId;
+    const char* releaseDate;
+    const char* packageType;
+    const char* packageSubType;
+    uint64_t packageSize;
+};
+
+struct NativeBgftDownloadParamEx {
+    NativeBgftDownloadParam params;
+    uint32_t slot;
+};
+
+struct NativeBgftTaskProgress {
+    uint32_t bits;
+    int32_t errorResult;
+    uint64_t length;
+    uint64_t transferred;
+    uint64_t lengthTotal;
+    uint64_t transferredTotal;
+    uint32_t numIndex;
+    uint32_t numTotal;
+    uint32_t restSec;
+    uint32_t restSecTotal;
+    int32_t preparingPercent;
+    int32_t localCopyPercent;
+};
+
+static_assert(offsetof(NativeBgftDownloadParam, packageSize) == 96,
+              "unexpected BGFT package-size offset");
+static_assert(sizeof(NativeBgftDownloadParam) == 104,
+              "unexpected BGFT download-parameter size");
+static_assert(sizeof(NativeBgftDownloadParamEx) == 112,
+              "unexpected BGFT storage-parameter size");
+static_assert(sizeof(NativeBgftTaskProgress) == 64,
+              "unexpected BGFT progress size");
+
+} // namespace
+
+extern "C" {
+int32_t fpkgiBgftRegisterStorage(NativeBgftDownloadParamEx* params, int32_t* task_id)
+    __asm__("sceBgftServiceIntDownloadRegisterTaskByStorageEx");
+int32_t fpkgiBgftGetProgress(int32_t task_id, NativeBgftTaskProgress* progress)
+    __asm__("sceBgftServiceDownloadGetProgress");
+}
 
 namespace fpkgi {
 namespace {
@@ -169,7 +229,7 @@ bool PackageInstaller::enqueue(const char* pkg_path, const std::string& display_
         return false;
     }
 
-    OrbisBgftDownloadParamEx params;
+    NativeBgftDownloadParamEx params;
     std::memset(&params, 0, sizeof(params));
     params.params.userId = user_id_;
     params.params.entitlementType = 5;
@@ -179,44 +239,48 @@ bool PackageInstaller::enqueue(const char* pkg_path, const std::string& display_
     params.params.contentName = display_name.c_str();
     params.params.iconPath = "/app0/sce_sys/icon0.png";
     params.params.skuId = "";
-    params.params.option = ORBIS_BGFT_TASK_OPT_INVISIBLE;
+    params.params.option = static_cast<int32_t>(ORBIS_BGFT_TASK_OPT_INVISIBLE);
     params.params.playgoScenarioId = "0";
     params.params.releaseDate = "";
     params.params.packageType = "";
     params.params.packageSubType = "";
-    params.params.packageSize = package_size <= UINT32_MAX ? static_cast<uint32_t>(package_size) : 0;
+    params.params.packageSize = package_size;
     params.slot = 0;
 
-    result = sceBgftServiceIntDownloadRegisterTaskByStorageEx(&params, &task_id);
+    result = fpkgiBgftRegisterStorage(&params, &task_id);
     if (result != 0) {
         error_code = result;
         error = code_message("sceBgftServiceIntDownloadRegisterTaskByStorageEx", result);
         return false;
     }
-    result = sceBgftServiceIntDownloadStartTask(task_id);
+    result = sceBgftServiceDownloadStartTask(task_id);
     if (result != 0) {
         sceBgftServiceIntDownloadUnregisterTask(task_id);
         error_code = result;
-        error = code_message("sceBgftServiceIntDownloadStartTask", result);
+        error = code_message("sceBgftServiceDownloadStartTask", result);
         return false;
     }
     return true;
 }
 
 bool PackageInstaller::progress(int32_t task_id, uint64_t& transferred, uint64_t& total,
-                                int32_t& task_error, std::string& error, int32_t& error_code) {
+                                bool& completed, int32_t& task_error, std::string& error,
+                                int32_t& error_code) {
     error_code = 0;
-    OrbisBgftTaskProgress value;
+    completed = false;
+    NativeBgftTaskProgress value;
     std::memset(&value, 0, sizeof(value));
-    const int32_t result = sceBgftServiceIntDownloadGetProgress(task_id, &value);
+    const int32_t result = fpkgiBgftGetProgress(task_id, &value);
     if (result != 0) {
         error_code = result;
-        error = code_message("sceBgftServiceIntDownloadGetProgress", result);
+        error = code_message("sceBgftServiceDownloadGetProgress", result);
         return false;
     }
     transferred = value.transferredTotal ? value.transferredTotal : value.transferred;
     total = value.lengthTotal ? value.lengthTotal : value.length;
     task_error = value.errorResult;
+    completed = total != 0 && transferred >= total &&
+                value.preparingPercent >= 100 && value.localCopyPercent >= 100;
     return true;
 }
 

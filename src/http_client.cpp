@@ -1,5 +1,6 @@
 #include "http_client.hpp"
 #include "catalog.hpp"
+#include "pem_bundle.hpp"
 
 #include <orbis/Http.h>
 #include <orbis/Net.h>
@@ -9,22 +10,41 @@
 #include <cstdio>
 #include <cstring>
 #include <sstream>
+#include <new>
+
 #include <vector>
+extern "C" {
+// OpenOrbis v0.5.4 exports these symbols but its public headers omit their parameters.
+int32_t fpkgiHttpSetAutoRedirect(int32_t id, int32_t enabled)
+    __asm__("sceHttpSetAutoRedirect");
+int32_t fpkgiHttpSetRecvTimeOut(int32_t id, uint32_t microseconds)
+    __asm__("sceHttpSetRecvTimeOut");
+int32_t fpkgiSslTerm(int32_t ssl_context) __asm__("sceSslTerm");
+}
 
 namespace fpkgi {
 namespace {
 
 const char* kUserAgent = "FPKGi-Native/1.00 (OpenOrbis PS4 Homebrew)";
+const char* kCaBundlePath = "/app0/assets/cacert.pem";
 const size_t kNetPoolSize = 64 * 1024;
-const size_t kSslPoolSize = 512 * 1024;
+const size_t kSslPoolSize = 1024 * 1024;
 const size_t kHttpPoolSize = 512 * 1024;
 const int kMaxRedirects = 6;
+const uint32_t kConnectTimeoutUs = 10 * 1000 * 1000;
+const uint32_t kIoTimeoutUs = 30 * 1000 * 1000;
 
 struct RequestHandles {
     int tmpl;
     int conn;
     int req;
     RequestHandles() : tmpl(-1), conn(-1), req(-1) {}
+};
+
+struct TrustStore {
+    std::vector<std::string> certificates;
+    std::vector<SslPem> pem;
+    std::vector<SslPem*> roots;
 };
 
 void close_request(RequestHandles& handles) {
@@ -42,6 +62,43 @@ std::string native_error(const char* operation, int32_t code) {
     out.fill('0');
     out << static_cast<uint32_t>(code) << ")";
     return out.str();
+}
+
+bool load_https_trust(int http_context, TrustStore*& trust, std::string& error) {
+    std::string bundle;
+    if (!load_text_file(kCaBundlePath, bundle, error)) {
+        error = "cannot read packaged HTTPS CA bundle: " + error;
+        return false;
+    }
+
+    TrustStore* value = new (std::nothrow) TrustStore;
+    if (!value) {
+        error = "cannot allocate HTTPS trust store";
+        return false;
+    }
+    if (!parse_pem_bundle(bundle, value->certificates, error)) {
+        delete value;
+        return false;
+    }
+    value->pem.reserve(value->certificates.size());
+    value->roots.reserve(value->certificates.size());
+    for (size_t i = 0; i < value->certificates.size(); ++i) {
+        SslPem pem;
+        pem.ptr = &value->certificates[i][0];
+        pem.size = value->certificates[i].size();
+        value->pem.push_back(pem);
+    }
+    for (size_t i = 0; i < value->pem.size(); ++i) value->roots.push_back(&value->pem[i]);
+
+    const int result = sceHttpsLoadCert(http_context, static_cast<int32_t>(value->roots.size()),
+                                        &value->roots[0], 0, 0);
+    if (result < 0) {
+        error = native_error("sceHttpsLoadCert", result);
+        delete value;
+        return false;
+    }
+    trust = value;
+    return true;
 }
 
 std::string trim(const std::string& value) {
@@ -94,6 +151,32 @@ bool open_get(int http_context, const std::string& url, RequestHandles& handles,
     handles.req = sceHttpCreateRequestWithURL(handles.conn, ORBIS_METHOD_GET, url.c_str(), 0);
     if (handles.req < 0) {
         error = native_error("sceHttpCreateRequestWithURL", handles.req);
+        return false;
+    }
+
+    int policy_result = fpkgiHttpSetAutoRedirect(handles.req, 0);
+    if (policy_result < 0) {
+        error = native_error("disable automatic redirects", policy_result);
+        return false;
+    }
+    policy_result = sceHttpSetResolveTimeOut(handles.req, kConnectTimeoutUs);
+    if (policy_result < 0) {
+        error = native_error("set resolve timeout", policy_result);
+        return false;
+    }
+    policy_result = sceHttpSetConnectTimeOut(handles.req, kConnectTimeoutUs);
+    if (policy_result < 0) {
+        error = native_error("set connect timeout", policy_result);
+        return false;
+    }
+    policy_result = sceHttpSetSendTimeOut(handles.req, kIoTimeoutUs);
+    if (policy_result < 0) {
+        error = native_error("set send timeout", policy_result);
+        return false;
+    }
+    policy_result = fpkgiHttpSetRecvTimeOut(handles.req, kIoTimeoutUs);
+    if (policy_result < 0) {
+        error = native_error("set receive timeout", policy_result);
         return false;
     }
 
@@ -159,7 +242,8 @@ std::string status_error(int32_t status) {
 
 } // namespace
 
-HttpClient::HttpClient() : net_pool_(-1), ssl_context_(-1), http_context_(-1) {}
+HttpClient::HttpClient()
+    : net_pool_(-1), ssl_context_(-1), http_context_(-1), trust_store_(0) {}
 HttpClient::~HttpClient() { shutdown(); }
 
 bool HttpClient::initialize(std::string& error) {
@@ -202,13 +286,21 @@ bool HttpClient::initialize(std::string& error) {
         shutdown();
         return false;
     }
+    TrustStore* trust = 0;
+    if (!load_https_trust(http_context_, trust, error)) {
+        shutdown();
+        return false;
+    }
+    trust_store_ = trust;
     return true;
 }
 
 void HttpClient::shutdown() {
     if (http_context_ >= 0) sceHttpTerm(http_context_);
-    if (ssl_context_ >= 0) sceSslTerm();
+    if (trust_store_) delete static_cast<TrustStore*>(trust_store_);
+    if (ssl_context_ >= 0) fpkgiSslTerm(ssl_context_);
     if (net_pool_ >= 0) sceNetPoolDestroy(net_pool_);
+    trust_store_ = 0;
     http_context_ = ssl_context_ = net_pool_ = -1;
 }
 
