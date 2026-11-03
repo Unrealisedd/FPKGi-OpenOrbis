@@ -11,10 +11,11 @@ from typing import Any
 from urllib.parse import urlsplit
 
 TITLE_ID_RE = re.compile(r"^[A-Z]{4}[0-9]{5}$")
-VERSION_RE = re.compile(r"^(?!.*\.\.)[A-Za-z0-9._-]+$")
+VERSION_RE = re.compile(r"^(?!\.$)(?!.*\.\.)[A-Za-z0-9._-]+$")
 SHA_RE = re.compile(r"^[a-fA-F0-9]{64}$")
 DECIMAL_RE = re.compile(r"^[0-9]+$")
 MAX_UINT64 = (1 << 64) - 1
+MAX_CATALOG_BYTES = 2 * 1024 * 1024
 MAX_URL = 2048
 MAX_ITEMS = 4096
 MAX_JSON_DEPTH = 16
@@ -155,7 +156,7 @@ def validate_document(document: Any) -> None:
         name = bounded_text(metadata["name"], f"{prefix}.name", 96)
         version = bounded_text(metadata["version"], f"{prefix}.version", 16)
         if not VERSION_RE.fullmatch(version):
-            fail(f"{prefix}.version may contain only letters, digits, '.', '-', and '_' without '..'")
+            fail(f"{prefix}.version may not be '.' and may contain only letters, digits, '.', '-', and '_' without '..'")
         parse_size(metadata["size"], f"{prefix}.size")
 
         for field, limit in OPTIONAL_TEXT_LIMITS.items():
@@ -177,7 +178,11 @@ def validate_document(document: Any) -> None:
 
 
 def validate(path: Path) -> None:
-    document = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=reject_duplicate_keys)
+    with path.open("rb") as file:
+        payload = file.read(MAX_CATALOG_BYTES + 1)
+    if len(payload) > MAX_CATALOG_BYTES:
+        fail(f"catalog exceeds {MAX_CATALOG_BYTES} bytes")
+    document = json.loads(payload.decode("utf-8"), object_pairs_hook=reject_duplicate_keys)
     validate_document(document)
 
 

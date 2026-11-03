@@ -266,7 +266,11 @@ private:
     }
 
     void skip_ws() {
-        while (pos_ < input_.size() && std::isspace(static_cast<unsigned char>(input_[pos_]))) ++pos_;
+        while (pos_ < input_.size()) {
+            const char c = input_[pos_];
+            if (c != ' ' && c != '\t' && c != '\r' && c != '\n') break;
+            ++pos_;
+        }
     }
 
     bool peek(char c) const { return pos_ < input_.size() && input_[pos_] == c; }

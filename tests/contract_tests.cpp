@@ -58,6 +58,21 @@ void test_catalog_contract() {
                items[0].name.substr(92) == "\xF0\x9F\x98\x80",
            "UTF-8 byte limits use the decoded four-byte scalar");
 
+    const std::string distinct_versions =
+        "{\"DATA\":{\"https://example.test/one.pkg\":{"
+        "\"title_id\":\"ABCD00002\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\"},"
+        "\"https://example.test/two.pkg\":{"
+        "\"title_id\":\"ABCD00002\",\"name\":\"A\",\"version\":\"1_\",\"size\":\"1\"}}}";
+    items.clear();
+    error.clear();
+    expect(fpkgi::parse_catalog(distinct_versions, items, error) && items.size() == 2,
+           "distinct accepted versions coexist in one catalog");
+    if (items.size() == 2) {
+        expect(fpkgi::canonical_package_filename(items[0]) !=
+                   fpkgi::canonical_package_filename(items[1]),
+               "distinct title/version identities resolve to distinct package filenames");
+    }
+
     const char* invalid[] = {
         "{}",
         "{\"DATA\":[],\"extra\":1}",
@@ -74,10 +89,13 @@ void test_catalog_contract() {
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\"},\"https://example.test/b.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"B\",\"version\":\"1\",\"size\":\"2\"}}}",
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"\\uD83D\",\"version\":\"1\",\"size\":\"1\"}}}",
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"\\uDE00\",\"version\":\"1\",\"size\":\"1\"}}}",
+        "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\".\",\"size\":\"1\"}}}",
         "{\"DATA\":{},\"DATA\":{}}",
     };
     for (size_t i = 0; i < sizeof(invalid) / sizeof(invalid[0]); ++i)
         expect(!parses(invalid[i]), "malformed catalog metadata is rejected");
+    expect(!parses("{\f\"DATA\":{}}"), "form feed is not accepted as JSON whitespace");
+    expect(!parses("{\v\"DATA\":{}}"), "vertical tab is not accepted as JSON whitespace");
     std::string invalid_utf8 =
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"";
     invalid_utf8.push_back(static_cast<char>(0xC0));
@@ -113,6 +131,12 @@ void test_catalog_contract() {
 void test_url_policy() {
     std::string error;
     expect(fpkgi::validate_http_url("http://192.168.1.5:8080/pkg.pkg", error), "explicit LAN HTTP is accepted");
+    error.clear();
+    expect(!fpkgi::validate_http_url("http://010.000.000.001/pkg.pkg", error),
+           "IPv4 octets with leading zeros are rejected");
+    error.clear();
+    expect(!fpkgi::validate_http_url("http://127.0.0.1./pkg.pkg", error),
+           "IPv4 host with a trailing dot is rejected");
     error.clear();
     expect(fpkgi::validate_http_url("https://example.test/pkg.pkg?tokenless=1", error), "HTTPS URL is accepted");
     error.clear();
@@ -166,8 +190,17 @@ void test_canonical_filename() {
     item.title_id = "FPKG00001";
     item.version = "01.00";
     item.name = "Owner / Package";
-    expect(fpkgi::canonical_package_filename(item) == "FPKG00001_01.00_Owner Package.pkg",
-           "canonical filename includes title ID, version, and sanitized name");
+    expect(fpkgi::canonical_package_filename(item) ==
+               "FPKG00001_v30312e3030_Owner Package.pkg",
+           "canonical filename reversibly encodes the version and sanitizes the name");
+
+    item.version = "1";
+    item.name = "A";
+    const std::string first_version = fpkgi::canonical_package_filename(item);
+    item.version = "1_";
+    const std::string second_version = fpkgi::canonical_package_filename(item);
+    expect(first_version != second_version, "distinct accepted versions cannot share a filename");
+
     item.version = "../../01";
     item.name = "../../owner\\supplied/pkg";
     const std::string filename = fpkgi::canonical_package_filename(item);
@@ -203,6 +236,13 @@ void test_pem_bundle() {
     error.clear();
     expect(!fpkgi::load_text_file("assets/cacert.pem", 1, rejected_bundle, error),
            "bounded file loader rejects oversized local input");
+    const char* text_link = "build/contract-text-link";
+    std::remove(text_link);
+    expect(symlink("../assets/cacert.pem", text_link) == 0, "text symlink fixture is created");
+    error.clear();
+    expect(!fpkgi::load_text_file(text_link, 1024 * 1024, rejected_bundle, error),
+           "bounded text loader rejects a symlink path");
+    std::remove(text_link);
 
     error.clear();
     expect(!fpkgi::parse_pem_bundle("-----BEGIN CERTIFICATE-----\nQUJD\n",

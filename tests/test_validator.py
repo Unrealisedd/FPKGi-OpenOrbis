@@ -45,12 +45,15 @@ class CatalogValidatorTests(unittest.TestCase):
             {"DATA": {"https://example.test/a.pkg": entry(size="0")}},
             {"DATA": {"https://example.test/a.pkg": entry(size=str(1 << 64))}},
             {"DATA": {"https://example.test/a.pkg": entry(name="A" * 93 + "\U0001F600")}},
+            {"DATA": {"https://example.test/a.pkg": entry(version=".")}},
             {"DATA": {"http://lan.example/a.pkg": entry()}},
             {"DATA": {"https://user@example.test/a.pkg": entry()}},
             {"DATA": {"https://example.test/a.pkg#fragment": entry()}},
             {"DATA": {"https://example.test:/a.pkg": entry()}},
             {"DATA": {"https://example..test/a.pkg": entry()}},
             {"DATA": {"https://example.test/bad%2.pkg": entry()}},
+            {"DATA": {"https://010.000.000.001/a.pkg": entry()}},
+            {"DATA": {"https://127.0.0.1./a.pkg": entry()}},
             {"DATA": {"https://example.test/a.pkg": entry(cover_url="//example.test/cover.png")}},
             {"DATA": {"https://example.test/a.pkg": entry(unknown=True)}},
             {"DATA": {"https://example.test/a.pkg": entry(sha256="1234")}},
@@ -70,6 +73,28 @@ class CatalogValidatorTests(unittest.TestCase):
             path.write_text('{"DATA":{},"DATA":{}}', encoding="utf-8")
             with self.assertRaises(ValueError):
                 VALIDATOR.validate(path)
+
+    def test_file_size_and_json_whitespace_limits(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "catalog.json"
+            path.write_bytes(b" " * (VALIDATOR.MAX_CATALOG_BYTES + 1))
+            with self.assertRaisesRegex(ValueError, "exceeds"):
+                VALIDATOR.validate(path)
+            for whitespace in (b"\x0c", b"\x0b"):
+                with self.subTest(whitespace=whitespace):
+                    path.write_bytes(b"{" + whitespace + b'"DATA":{}}')
+                    with self.assertRaises(json.JSONDecodeError):
+                        VALIDATOR.validate(path)
+
+    def test_version_schema_matches_runtime(self) -> None:
+        schema = json.loads((ROOT / "catalog" / "schema.json").read_text(encoding="utf-8"))
+        pattern = schema["$defs"]["package"]["properties"]["version"]["pattern"]
+        for value in ("1", ".1", "1_", "1-"):
+            with self.subTest(valid=value):
+                self.assertIsNotNone(re.fullmatch(pattern, value))
+        for value in (".", "..", "1..0"):
+            with self.subTest(invalid=value):
+                self.assertIsNone(re.fullmatch(pattern, value))
 
     def test_uint64_schema_pattern_matches_runtime_bounds(self) -> None:
         schema = json.loads((ROOT / "catalog" / "schema.json").read_text(encoding="utf-8"))

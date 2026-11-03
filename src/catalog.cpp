@@ -2,12 +2,14 @@
 #include "mini_json.hpp"
 
 #include <cctype>
-#include <fstream>
+#include <cstdio>
+#include <fcntl.h>
 #include <limits>
 #include <map>
 #include <set>
 #include <sstream>
 #include <sys/stat.h>
+#include <unistd.h>
 
 namespace fpkgi {
 namespace {
@@ -48,6 +50,11 @@ bool all_space(const std::string& value) {
     for (size_t i = 0; i < value.size(); ++i)
         if (value[i] != ' ' && value[i] != '\t') return false;
     return true;
+}
+
+bool ascii_alnum(unsigned char c) {
+    return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') ||
+           (c >= 'a' && c <= 'z');
 }
 
 bool parse_port(const std::string& value) {
@@ -98,6 +105,7 @@ bool valid_ipv4_host(const std::string& host) {
         const size_t dot = host.find('.', begin);
         const size_t end = dot == std::string::npos ? host.size() : dot;
         if (end == begin || end - begin > 3) return false;
+        if (end - begin > 1 && host[begin] == '0') return false;
         unsigned value = 0;
         for (size_t i = begin; i < end; ++i) {
             if (host[i] < '0' || host[i] > '9') return false;
@@ -106,6 +114,7 @@ bool valid_ipv4_host(const std::string& host) {
         if (value > 255) return false;
         ++groups;
         if (dot == std::string::npos) break;
+        if (dot + 1 == host.size()) return false;
         begin = dot + 1;
     }
     return groups == 4;
@@ -276,7 +285,7 @@ bool valid_version(const std::string& value) {
     if (value == "." || value == ".." || value.find("..") != std::string::npos) return false;
     for (size_t i = 0; i < value.size(); ++i) {
         const unsigned char c = static_cast<unsigned char>(value[i]);
-        if (!std::isalnum(c) && c != '.' && c != '-' && c != '_') return false;
+        if (!ascii_alnum(c) && c != '.' && c != '-' && c != '_') return false;
     }
     return true;
 }
@@ -327,7 +336,7 @@ std::string sanitize_component(const std::string& value, size_t max_length, cons
     bool separator = false;
     for (size_t i = 0; i < value.size() && result.size() < max_length; ++i) {
         const unsigned char c = static_cast<unsigned char>(value[i]);
-        const bool safe = std::isalnum(c) || c == '-' || c == '_' || c == '.';
+        const bool safe = ascii_alnum(c) || c == '-' || c == '_' || c == '.';
         if (safe) {
             if (c == '.' && !result.empty() && result[result.size() - 1] == '.') continue;
             result.push_back(static_cast<char>(c));
@@ -349,6 +358,18 @@ std::string sanitize_component(const std::string& value, size_t max_length, cons
     while (begin < result.size() && (result[begin] == ' ' || result[begin] == '.')) ++begin;
     result = result.substr(begin);
     return result.empty() ? fallback : result;
+}
+
+std::string hex_component(const std::string& value) {
+    static const char digits[] = "0123456789abcdef";
+    std::string result;
+    result.reserve(value.size() * 2);
+    for (size_t i = 0; i < value.size(); ++i) {
+        const unsigned char c = static_cast<unsigned char>(value[i]);
+        result.push_back(digits[c >> 4]);
+        result.push_back(digits[c & 0x0f]);
+    }
+    return result;
 }
 
 } // namespace
@@ -431,6 +452,7 @@ bool parse_catalog(const std::string& json, std::vector<CatalogItem>& items, std
 
         std::vector<CatalogItem> parsed;
         std::set<std::string> identities;
+        std::set<std::string> package_paths;
         for (std::map<std::string, Json>::const_iterator entry = data->as_object().begin();
              entry != data->as_object().end(); ++entry) {
             CatalogItem item;
@@ -467,7 +489,7 @@ bool parse_catalog(const std::string& json, std::vector<CatalogItem>& items, std
                 return false;
             }
             if (!valid_version(item.version)) {
-                error = "field 'version' may contain only letters, digits, '.', '-', and '_' without '..'";
+                error = "field 'version' may not be '.' and may contain only letters, digits, '.', '-', and '_' without '..'";
                 return false;
             }
             if (!item.cover_url.empty() && !validate_http_url(item.cover_url, url_error)) {
@@ -491,6 +513,11 @@ bool parse_catalog(const std::string& json, std::vector<CatalogItem>& items, std
                 error = "duplicate or conflicting title_id/version identity: " + item.title_id + " " + item.version;
                 return false;
             }
+            const std::string package_path = canonical_package_filename(item);
+            if (!package_paths.insert(package_path).second) {
+                error = "catalog entries resolve to the same package filename: " + package_path;
+                return false;
+            }
             parsed.push_back(item);
         }
         items.swap(parsed);
@@ -502,38 +529,47 @@ bool parse_catalog(const std::string& json, std::vector<CatalogItem>& items, std
 }
 
 std::string canonical_package_filename(const CatalogItem& item) {
-    const std::string version = sanitize_component(item.version, 24, "0");
     const std::string name = sanitize_component(item.name, 120, "Package");
-    return item.title_id + "_" + version + "_" + name + ".pkg";
+    return item.title_id + "_v" + hex_component(item.version) + "_" + name + ".pkg";
 }
 
 bool load_text_file(const char* path, size_t max_bytes, std::string& content, std::string& error) {
     content.clear();
+    const int fd = open(path, O_RDONLY | O_NOFOLLOW);
+    if (fd < 0) {
+        error = std::string("cannot securely open ") + path;
+        return false;
+    }
+
     struct stat info;
-    if (lstat(path, &info) != 0 || info.st_size < 0 || !S_ISREG(info.st_mode)) {
+    if (fstat(fd, &info) != 0 || info.st_size < 0 || !S_ISREG(info.st_mode)) {
+        close(fd);
         error = std::string("not a regular file: ") + path;
         return false;
     }
     if (static_cast<uint64_t>(info.st_size) > static_cast<uint64_t>(max_bytes)) {
+        close(fd);
         error = std::string("file exceeds size limit: ") + path;
         return false;
     }
-    std::ifstream file(path, std::ios::in | std::ios::binary | std::ios::ate);
+
+    FILE* file = fdopen(fd, "rb");
     if (!file) {
-        error = std::string("cannot open ") + path;
+        close(fd);
+        error = std::string("cannot open stream for ") + path;
         return false;
     }
-    const std::streamoff length = file.tellg();
-    if (length < 0 || static_cast<uint64_t>(length) > static_cast<uint64_t>(max_bytes)) {
-        error = std::string("file exceeds size limit: ") + path;
-        return false;
+    const size_t length = static_cast<size_t>(info.st_size);
+    content.resize(length);
+    bool ok = length == 0 || std::fread(&content[0], 1, length, file) == length;
+    if (ok) {
+        const int extra = std::fgetc(file);
+        if (extra != EOF || std::ferror(file)) ok = false;
     }
-    content.resize(static_cast<size_t>(length));
-    file.seekg(0, std::ios::beg);
-    if (length != 0 &&
-        !file.read(&content[0], static_cast<std::streamsize>(length))) {
+    if (std::fclose(file) != 0) ok = false;
+    if (!ok) {
         content.clear();
-        error = std::string("cannot read ") + path;
+        error = std::string("cannot read stable bounded file ") + path;
         return false;
     }
     return true;
