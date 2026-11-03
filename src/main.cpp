@@ -38,8 +38,34 @@ const int kInstallPollLimit = 7200;
 const uint32_t kInstallPollDelayUs = 500000;
 const int kInstallStablePolls = 4;
 
+const char* kBootLogPaths[] = {
+    "/mnt/usb0/FPKGi-Native-boot.log",
+    "/mnt/usb1/FPKGi-Native-boot.log",
+    "/data/FPKGi-Native-boot.log",
+};
+
+void boot_trace(const char* stage, const char* detail = 0) {
+    char line[768];
+    const int length = std::snprintf(line, sizeof(line), "FPKGi boot: %s%s%s\n",
+                                     stage, detail ? " - " : "", detail ? detail : "");
+    if (length <= 0) return;
+    const size_t bytes = std::min(static_cast<size_t>(length), sizeof(line) - 1);
+    std::fwrite(line, 1, bytes, stderr);
+    const int write_mode = std::strcmp(stage, "ENTRY") == 0 ? O_TRUNC : O_APPEND;
+    for (size_t i = 0; i < sizeof(kBootLogPaths) / sizeof(kBootLogPaths[0]); ++i) {
+        const int fd = open(kBootLogPaths[i],
+                            O_WRONLY | O_CREAT | write_mode | O_NOFOLLOW, 0600);
+        if (fd < 0) continue;
+        const ssize_t ignored = write(fd, line, bytes);
+        (void)ignored;
+        fsync(fd);
+        close(fd);
+    }
+}
+
 struct SharedState {
     pthread_mutex_t mutex;
+    bool mutex_ready;
     std::vector<CatalogItem> items;
     fpkgi::HttpClient http;
     bool job_running;
@@ -48,12 +74,14 @@ struct SharedState {
     uint64_t total;
     int32_t last_error_code;
 
-    SharedState() : job_running(false), status("STARTING"), current(0), total(0), last_error_code(0) {
-        pthread_mutex_init(&mutex, 0);
+    SharedState()
+        : mutex_ready(false), job_running(false), status("STARTING"),
+          current(0), total(0), last_error_code(0) {
+        mutex_ready = pthread_mutex_init(&mutex, 0) == 0;
     }
     ~SharedState() {
         http.shutdown();
-        pthread_mutex_destroy(&mutex);
+        if (mutex_ready) pthread_mutex_destroy(&mutex);
     }
 };
 
@@ -192,26 +220,40 @@ std::string human_bytes(uint64_t bytes) {
 }
 
 void refresh_catalog(SharedState* state) {
+    boot_trace("REFRESH_BEGIN");
     set_status(state, "REFRESHING CATALOG", true);
     std::string error;
     if (!state->http.initialize(error)) {
+        boot_trace("HTTP_INIT_FAILED", error.c_str());
         set_status(state, "CATALOG REFRESH FAILED - CURRENT LIST KEPT: " + error, false);
         return;
     }
+    boot_trace("HTTP_READY");
     std::string json;
+    boot_trace("CATALOG_FETCH_BEGIN");
     if (!state->http.get_text(kCatalogUrl, kMaxCatalogBytes, json, error)) {
+        boot_trace("CATALOG_FETCH_FAILED", error.c_str());
         set_status(state, "CATALOG REFRESH FAILED - CURRENT LIST KEPT: " + error, false);
         return;
     }
+    boot_trace("CATALOG_FETCH_COMPLETE");
+
     std::vector<CatalogItem> parsed;
+    boot_trace("CATALOG_PARSE_BEGIN");
     if (!fpkgi::parse_catalog(json, parsed, error)) {
+        boot_trace("CATALOG_PARSE_FAILED", error.c_str());
         set_status(state, "CATALOG INVALID - CURRENT LIST KEPT: " + error, false);
         return;
     }
+    boot_trace("CATALOG_PARSE_COMPLETE");
+
+    boot_trace("CATALOG_SAVE_BEGIN");
     if (!atomic_save_catalog(json, error)) {
+        boot_trace("CATALOG_SAVE_FAILED", error.c_str());
         set_status(state, "CATALOG SAVE FAILED - CURRENT LIST KEPT: " + error, false);
         return;
     }
+    boot_trace("CATALOG_SAVE_COMPLETE");
 
     pthread_mutex_lock(&state->mutex);
     state->items.swap(parsed);
@@ -219,6 +261,7 @@ void refresh_catalog(SharedState* state) {
     state->current = state->total = 0;
     state->last_error_code = 0;
     pthread_mutex_unlock(&state->mutex);
+    boot_trace("REFRESH_COMPLETE");
 }
 
 void install_package(SharedState* state, const CatalogItem& item) {
@@ -484,25 +527,66 @@ void render(SDL_Renderer* renderer, SharedState& state, int selected) {
 int main(int, char**) {
     setvbuf(stdout, 0, _IONBF, 0);
     umask(0077);
-    std::string storage_error;
-    if (!ensure_directories(storage_error)) {
-        std::fprintf(stderr, "FPKGi storage initialization failed: %s\n", storage_error.c_str());
-        return 4;
-    }
-    SharedState state;
-    load_initial_catalog(state);
+    boot_trace("ENTRY", "VERSION 1.01");
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) return 1;
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
+        boot_trace("SDL_INIT_FAILED", SDL_GetError());
+        return 1;
+    }
+    boot_trace("SDL_INITIALIZED");
+
     SDL_Window* window = SDL_CreateWindow("FPKGi Native", SDL_WINDOWPOS_UNDEFINED,
                                           SDL_WINDOWPOS_UNDEFINED, kWidth, kHeight, 0);
-    if (!window) return 2;
+    if (!window) {
+        boot_trace("SDL_WINDOW_FAILED", SDL_GetError());
+        SDL_Quit();
+        return 2;
+    }
     SDL_Surface* surface = SDL_GetWindowSurface(window);
+    if (!surface) {
+        boot_trace("SDL_SURFACE_FAILED", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 3;
+    }
     SDL_Renderer* renderer = SDL_CreateSoftwareRenderer(surface);
-    if (!renderer) return 3;
-    SDL_Joystick* joystick = SDL_NumJoysticks() > 0 ? SDL_JoystickOpen(0) : 0;
+    if (!renderer) {
+        boot_trace("SDL_RENDERER_FAILED", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 4;
+    }
+    boot_trace("SDL_RENDERER_READY");
 
-    start_job(state, JobRefresh, 0);
+    SDL_Joystick* joystick = SDL_NumJoysticks() > 0 ? SDL_JoystickOpen(0) : 0;
+    SharedState state;
+    if (!state.mutex_ready) {
+        boot_trace("MUTEX_INIT_FAILED");
+        if (joystick) SDL_JoystickClose(joystick);
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 5;
+    }
     int selected = 0;
+    render(renderer, state, selected);
+    if (SDL_UpdateWindowSurface(window) != 0) {
+        boot_trace("FIRST_FRAME_FAILED", SDL_GetError());
+    } else {
+        boot_trace("FIRST_FRAME_PRESENTED");
+    }
+
+    std::string storage_error;
+    if (ensure_directories(storage_error)) {
+        load_initial_catalog(state);
+        boot_trace("STORAGE_READY");
+    } else {
+        pthread_mutex_lock(&state.mutex);
+        state.status = "STORAGE DISABLED: " + storage_error;
+        pthread_mutex_unlock(&state.mutex);
+        boot_trace("STORAGE_FAILED", storage_error.c_str());
+    }
+
     bool running = true;
     while (running) {
         SDL_Event event;
@@ -553,6 +637,7 @@ int main(int, char**) {
         SDL_Delay(16);
     }
 
+    boot_trace("NORMAL_EXIT");
     if (joystick) SDL_JoystickClose(joystick);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

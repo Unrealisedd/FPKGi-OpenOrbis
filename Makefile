@@ -1,6 +1,6 @@
 # FPKGi Native - OpenOrbis PS4 package build
 TITLE       := FPKGi Native
-VERSION     := 1.00
+VERSION     := 1.01
 TITLE_ID    := FPKG00001
 CONTENT_ID  := IV0000-FPKG00001_00-FPKGINATIVE00001
 OUTPUT_PKG  := FPKGi-Native-v$(VERSION).pkg

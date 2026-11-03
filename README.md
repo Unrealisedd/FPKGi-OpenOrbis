@@ -4,11 +4,11 @@ FPKGi Native is a small OpenOrbis PS4 homebrew client for lawful homebrew and ow
 
 ## Supported scope
 
-Version 1.00 provides catalog browsing, HTTP/HTTPS catalog and package transfer, exact size/PS4 PKG magic/SHA-256 verification (required for HTTP packages, optional for HTTPS packages), BGFT installation, AppInstUtil completion checks, and SDL2 progress/error UI. Cross downloads and installs the selected item, Triangle refreshes the catalog, and Circle exits only while idle.
+Version 1.01 provides catalog browsing, HTTP/HTTPS catalog and package transfer, exact size/PS4 PKG magic/SHA-256 verification (required for HTTP packages, optional for HTTPS packages), BGFT installation, AppInstUtil completion checks, and SDL2 progress/error UI. Startup presents the UI before catalog storage initialization or network access; Cross downloads and installs the selected item, Triangle explicitly refreshes the catalog, and Circle exits only while idle.
 
 Full Unity visual parity, a durable queue, transfer resume/retry, and cancellation are outside this native-core release. The bundled catalog is intentionally empty and the application does not provide package content, credentials, entitlement bypasses, or commercial-package links.
 
-Firmware 14.00 runtime behavior remains unverified until the hardware qualification procedure is run on a console. Build success is not hardware qualification.
+The first firmware 14.00 launch of version 1.00 returned CE-34878-0 before presenting a frame. Version 1.01 stages startup and records boot progress for diagnosis; its runtime behavior remains unverified until the hardware qualification procedure is rerun on a console. Build success is not hardware qualification.
 
 ## Catalog and storage
 
@@ -47,16 +47,18 @@ make host-tests
 make
 ```
 
-The package output is `FPKGi-Native-v1.00.pkg`. CI downloads the exact v0.5.4 asset URL, verifies this digest, builds `eboot.bin` and the FPKG, validates it with LibOrbisPkg `pkg_validate`, records its SHA-256, and uploads build artifacts. CI does not publish releases.
+The package output is `FPKGi-Native-v1.01.pkg`. CI downloads the exact v0.5.4 asset URL, verifies this digest, builds `eboot.bin` and the FPKG, validates it with LibOrbisPkg `pkg_validate`, records its SHA-256, and uploads build artifacts. CI does not publish releases.
 
 ## PS4 installation
 
 1. Enable the PS4 debug settings supplied by the console's supported homebrew environment.
-2. Copy `FPKGi-Native-v1.00.pkg` to USB storage or transfer it with a trusted local package sender.
+2. Copy `FPKGi-Native-v1.01.pkg` to USB storage or transfer it with a trusted local package sender.
 3. Open **Debug Settings → Game → Package Installer** and select the package.
 4. Launch **FPKGi Native**. Use only catalog entries and FPKGs you created or are authorized to use.
 
 The runtime requires the privileged AppInstUtil and BGFT services exposed by a compatible homebrew environment. Native hexadecimal result codes remain visible in the UI for diagnosis.
+
+Version 1.01 appends bounded boot-stage lines to `FPKGi-Native-boot.log` at `/mnt/usb0`, `/mnt/usb1`, and `/data` when those paths are writable. Before each qualification launch, delete or rename any existing USB log; then a missing fresh `ENTRY - VERSION 1.01` proves that execution did not reach `main`. Keeping that USB connected makes pre-UI SDL, storage, and refresh failures observable without weakening certificate or package verification.
 
 ## License and attribution
 
