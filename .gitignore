@@ -8,4 +8,6 @@ eboot.bin
 *.oelf
 *.o
 .env
+__pycache__/
+*.pyc
 .DS_Store
