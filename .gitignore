@@ -1,0 +1,11 @@
+/build/
+/sce_module/
+/sce_sys/
+eboot.bin
+/pkg.gp4
+/*.pkg
+*.elf
+*.oelf
+*.o
+.env
+.DS_Store

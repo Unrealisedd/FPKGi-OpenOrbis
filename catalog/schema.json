@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Unrealisedd/FPKGi-OpenOrbis/main/catalog/schema.json",
+  "title": "FPKGi Native catalog",
+  "type": "object",
+  "required": ["DATA"],
+  "additionalProperties": false,
+  "properties": {
+    "DATA": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2048,
+        "pattern": "^https?://[^\\s/@#]+(?:/[^\\s#]*)?(?:\\?[^\\s#]*)?$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/package"
+      }
+    }
+  },
+  "$defs": {
+    "nullableText16": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 16
+    },
+    "package": {
+      "type": "object",
+      "required": ["title_id", "name", "version", "size"],
+      "additionalProperties": false,
+      "properties": {
+        "title_id": {
+          "type": "string",
+          "pattern": "^[A-Z]{4}[0-9]{5}$"
+        },
+        "region": {
+          "$ref": "#/$defs/nullableText16"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16,
+          "pattern": "^(?!.*\\.\\.)[A-Za-z0-9._-]+$"
+        },
+        "release": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "size": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^0*[1-9][0-9]*$"
+        },
+        "min_fw": {
+          "$ref": "#/$defs/nullableText16"
+        },
+        "cover_url": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^https?://[^\\s/@#]+(?:/[^\\s#]*)?(?:\\?[^\\s#]*)?$"
+            }
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

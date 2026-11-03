@@ -1,0 +1,107 @@
+name: Test and build PS4 FPKG
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-24.04
+    env:
+      OPENORBIS_URL: https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/releases/download/v0.5.4/toolchain-llvm-18.tar.gz
+      OPENORBIS_SHA256: 3c7cd5bb593ca74fa1c13fd59f3938dc0fc07985167f7275063019e63abe4526
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run host contract tests and validate empty catalog
+        run: |
+          make HOST_CXX=g++ host-tests
+          python3 scripts/validate_catalog.py catalog/catalog.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path("catalog/catalog.json").read_text(encoding="utf-8"))
+          if catalog != {"DATA": {}}:
+              raise SystemExit("bundled catalog must remain empty")
+          PY
+
+      - name: Download and verify OpenOrbis v0.5.4
+        run: |
+          set -euxo pipefail
+          curl --fail --location --retry 3 "$OPENORBIS_URL" --output openorbis-toolchain.tar.gz
+          printf '%s  %s\n' "$OPENORBIS_SHA256" openorbis-toolchain.tar.gz | sha256sum --check --strict
+          mkdir -p .openorbis
+          tar -xzf openorbis-toolchain.tar.gz -C .openorbis
+          LINK_X=$(find "$GITHUB_WORKSPACE/.openorbis" -type f -name link.x -print -quit)
+          test -n "$LINK_X"
+          TOOLCHAIN_ROOT=$(dirname "$LINK_X")
+          chmod +x "$TOOLCHAIN_ROOT/bin/linux/"*
+          test -x "$TOOLCHAIN_ROOT/bin/linux/PkgTool.Core"
+          test -x "$TOOLCHAIN_ROOT/bin/linux/create-fself"
+          test -x "$TOOLCHAIN_ROOT/bin/linux/create-gp4"
+          test -f "$TOOLCHAIN_ROOT/src/modules/right.sprx"
+          test -f "$TOOLCHAIN_ROOT/src/modules/libSceFios2.prx"
+          test -f "$TOOLCHAIN_ROOT/src/modules/libc.prx"
+          echo "TOOLCHAIN_ROOT=$TOOLCHAIN_ROOT" >> "$GITHUB_ENV"
+
+      - name: Build eboot.bin with LLVM 18
+        run: |
+          set -euxo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends clang-18 lld-18
+          export OO_PS4_TOOLCHAIN="$TOOLCHAIN_ROOT"
+          make CC=clang-18 CXX=clang++-18 LD=ld.lld-18 eboot.bin 2>&1 | tee fpkgi-compile.log
+          test -s eboot.bin
+
+      - name: Build and validate FPKG with LibOrbisPkg
+        run: |
+          set -euxo pipefail
+          chmod -R a+rwX "$GITHUB_WORKSPACE"
+          docker run --rm --user 0:0 \
+            --env OO_PS4_TOOLCHAIN=/opt/openorbis \
+            --volume "$GITHUB_WORKSPACE:/work" \
+            --volume "$TOOLCHAIN_ROOT:/opt/openorbis:ro" \
+            --workdir /work \
+            ubuntu:20.04 \
+            bash -euxo pipefail -c '
+              export DEBIAN_FRONTEND=noninteractive
+              apt-get update -qq
+              apt-get install -y --no-install-recommends make libicu66 libssl1.1 ca-certificates python3
+              make FPKGi-Native-v1.00.pkg
+              /opt/openorbis/bin/linux/PkgTool.Core pkg_validate --verbose FPKGi-Native-v1.00.pkg
+            ' 2>&1 | tee fpkgi-package.log
+          test -s FPKGi-Native-v1.00.pkg
+          sha256sum FPKGi-Native-v1.00.pkg > FPKGi-Native-v1.00.pkg.sha256
+          sha256sum --check --strict FPKGi-Native-v1.00.pkg.sha256
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: FPKGi-Native-v1.00-PS4
+          path: |
+            eboot.bin
+            FPKGi-Native-v1.00.pkg
+            FPKGi-Native-v1.00.pkg.sha256
+          if-no-files-found: error
+
+      - name: Upload diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: FPKGi-Native-v1.00-build-diagnostics
+          path: |
+            fpkgi-compile.log
+            fpkgi-package.log
+          if-no-files-found: ignore

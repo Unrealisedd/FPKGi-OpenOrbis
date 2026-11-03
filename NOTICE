@@ -1,0 +1,8 @@
+FPKGi Native 1.00
+
+Copyright (c) 2026 FPKGi Native contributors.
+Licensed under GNU General Public License version 2.0; see LICENSE.
+
+Portions of the native source were derived from OrbisShelf, copyright (c) 2026 OrbisShelf contributors, under the MIT License. The complete preserved MIT notice is in LICENSES/OrbisShelf-MIT.txt.
+
+Builds use the OpenOrbis PS4 Toolchain and its LibOrbisPkg packaging tools. Those projects retain their respective copyrights and licenses. Their binary toolchain archive is downloaded during CI and is not checked into this repository.
