@@ -28,12 +28,13 @@ LIBS := -lc -lkernel -lc++ -lSceUserService -lSceSysmodule -lSceNet -lSceSsl -lS
         -lSceAppInstUtil -lSceBgft -lSceVideoOut -lSceAudioOut -lScePad -lSDL2
 CFLAGS   := --target=x86_64-pc-freebsd12-elf -fPIC -funwind-tables -c -DORBIS -D_GNU_SOURCE \
             -isysroot $(TOOLCHAIN) -isystem $(TOOLCHAIN)/include
-CXXFLAGS := $(CFLAGS) -std=c++11 -isystem $(TOOLCHAIN)/include/c++/v1
+CXXFLAGS := $(CFLAGS) -std=c++11 -MMD -MP -isystem $(TOOLCHAIN)/include/c++/v1
 LDFLAGS  := -m elf_x86_64 -pie --script $(TOOLCHAIN)/link.x --eh-frame-hdr \
             -L$(TOOLCHAIN)/lib $(LIBS) $(TOOLCHAIN)/lib/crt1.o
 
 CPPFILES := $(wildcard $(PROJDIR)/*.cpp)
 OBJS     := $(patsubst $(PROJDIR)/%.cpp,$(INTDIR)/%.o,$(CPPFILES))
+DEPS     := $(OBJS:.o=.d)
 PACKAGE_ASSETS := catalog.json assets/cacert.pem
 RUNTIME_MODULES := sce_module/libSceFios2.prx sce_module/libc.prx
 PACKAGE_FILES := eboot.bin sce_sys/about/right.sprx sce_sys/param.sfo sce_sys/icon0.png \
@@ -42,6 +43,8 @@ MODULE_DATA := $(TOOLCHAIN)/src/modules
 HOST_TEST := $(INTDIR)/host-contract-tests
 HOST_TEST_SOURCES := tests/contract_tests.cpp src/catalog.cpp src/package_verify.cpp \
                      src/sha256.cpp src/pem_bundle.cpp
+
+-include $(DEPS)
 
 .PHONY: all clean prepare validate host-tests
 all: validate $(OUTPUT_PKG)

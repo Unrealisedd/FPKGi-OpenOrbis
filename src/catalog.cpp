@@ -7,11 +7,13 @@
 #include <map>
 #include <set>
 #include <sstream>
+#include <sys/stat.h>
 
 namespace fpkgi {
 namespace {
 
 const size_t kMaxUrlLength = 2048;
+const size_t kMaxCatalogItems = 4096;
 
 struct UrlParts {
     std::string scheme;
@@ -110,6 +112,7 @@ bool valid_ipv4_host(const std::string& host) {
 }
 
 bool valid_ipv6_host(const std::string& host) {
+    if (host.find(":::") != std::string::npos) return false;
     const size_t compression = host.find("::");
     if (compression != std::string::npos && host.find("::", compression + 2) != std::string::npos) return false;
     int groups = 0;
@@ -360,15 +363,14 @@ bool resolve_redirect_url(const std::string& current_url, const std::string& loc
     }
 
     UrlParts next;
-    if (location.find("://") != std::string::npos) {
+    const size_t first_delimiter = location.find_first_of("/?");
+    const size_t colon = location.find(':');
+    const bool has_leading_scheme =
+        colon != std::string::npos &&
+        (first_delimiter == std::string::npos || colon < first_delimiter);
+    if (has_leading_scheme) {
         resolved_url = location;
     } else {
-        const size_t first_delimiter = location.find_first_of("/?");
-        const size_t colon = location.find(':');
-        if (colon != std::string::npos && (first_delimiter == std::string::npos || colon < first_delimiter)) {
-            error = "redirect Location has an unsupported scheme";
-            return false;
-        }
         const std::string origin = current.scheme + "://" + current.authority;
         if (location[0] == '/') {
             resolved_url = origin + location;
@@ -408,6 +410,10 @@ bool parse_catalog(const std::string& json, std::vector<CatalogItem>& items, std
         const Json* data = root.get("DATA");
         if (!data->is_object()) {
             error = "catalog 'DATA' must be an object keyed by package URL";
+            return false;
+        }
+        if (data->as_object().size() > kMaxCatalogItems) {
+            error = "catalog contains more than 4096 packages";
             return false;
         }
 
@@ -463,6 +469,10 @@ bool parse_catalog(const std::string& json, std::vector<CatalogItem>& items, std
                 return false;
             }
             if (!normalize_sha256(metadata, item.sha256, error)) return false;
+            if (lower_ascii(item.pkg_url.substr(0, 7)) == "http://" && item.sha256.empty()) {
+                error = "HTTP package URLs require field 'sha256'";
+                return false;
+            }
 
             const std::string identity = item.title_id + "\n" + item.version;
             if (!identities.insert(identity).second) {
@@ -485,19 +495,35 @@ std::string canonical_package_filename(const CatalogItem& item) {
     return item.title_id + "_" + version + "_" + name + ".pkg";
 }
 
-bool load_text_file(const char* path, std::string& content, std::string& error) {
-    std::ifstream file(path, std::ios::in | std::ios::binary);
+bool load_text_file(const char* path, size_t max_bytes, std::string& content, std::string& error) {
+    content.clear();
+    struct stat info;
+    if (lstat(path, &info) != 0 || info.st_size < 0 || !S_ISREG(info.st_mode)) {
+        error = std::string("not a regular file: ") + path;
+        return false;
+    }
+    if (static_cast<uint64_t>(info.st_size) > static_cast<uint64_t>(max_bytes)) {
+        error = std::string("file exceeds size limit: ") + path;
+        return false;
+    }
+    std::ifstream file(path, std::ios::in | std::ios::binary | std::ios::ate);
     if (!file) {
         error = std::string("cannot open ") + path;
         return false;
     }
-    std::ostringstream buffer;
-    buffer << file.rdbuf();
-    if (!file.good() && !file.eof()) {
+    const std::streamoff length = file.tellg();
+    if (length < 0 || static_cast<uint64_t>(length) > static_cast<uint64_t>(max_bytes)) {
+        error = std::string("file exceeds size limit: ") + path;
+        return false;
+    }
+    content.resize(static_cast<size_t>(length));
+    file.seekg(0, std::ios::beg);
+    if (length != 0 &&
+        !file.read(&content[0], static_cast<std::streamsize>(length))) {
+        content.clear();
         error = std::string("cannot read ") + path;
         return false;
     }
-    content = buffer.str();
     return true;
 }
 

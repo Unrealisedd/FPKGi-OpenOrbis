@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include <vector>
 
 namespace {
@@ -44,6 +45,19 @@ void test_catalog_contract() {
     }
     expect(parses("{\"DATA\":{}}"), "empty bundled catalog is valid");
 
+    const std::string unicode_name(92, 'A');
+    const std::string unicode_catalog =
+        "{\"DATA\":{\"https://example.test/unicode.pkg\":{"
+        "\"title_id\":\"ABCD00001\",\"name\":\"" + unicode_name +
+        "\\uD83D\\uDE00\",\"version\":\"1\",\"size\":\"1\"}}}";
+    items.clear();
+    error.clear();
+    expect(fpkgi::parse_catalog(unicode_catalog, items, error),
+           "JSON surrogate pair is decoded as one Unicode scalar");
+    expect(items.size() == 1 && items[0].name.size() == 96 &&
+               items[0].name.substr(92) == "\xF0\x9F\x98\x80",
+           "UTF-8 byte limits use the decoded four-byte scalar");
+
     const char* invalid[] = {
         "{}",
         "{\"DATA\":[],\"extra\":1}",
@@ -51,16 +65,49 @@ void test_catalog_contract() {
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":1}}}",
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"0\"}}}",
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"18446744073709551616\"}}}",
+        "{\"DATA\":{\"http://lan.example/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\"}}}",
         "{\"DATA\":{\"https://user:pass@example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\"}}}",
         "{\"DATA\":{\"https://example.test/a.pkg#fragment\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\"}}}",
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\",\"cover_url\":\"//example.test/cover.png\"}}}",
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\",\"unknown\":true}}}",
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\",\"sha256\":\"1234\"}}}",
         "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"A\",\"version\":\"1\",\"size\":\"1\"},\"https://example.test/b.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"B\",\"version\":\"1\",\"size\":\"2\"}}}",
+        "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"\\uD83D\",\"version\":\"1\",\"size\":\"1\"}}}",
+        "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"\\uDE00\",\"version\":\"1\",\"size\":\"1\"}}}",
         "{\"DATA\":{},\"DATA\":{}}",
     };
     for (size_t i = 0; i < sizeof(invalid) / sizeof(invalid[0]); ++i)
         expect(!parses(invalid[i]), "malformed catalog metadata is rejected");
+    std::string invalid_utf8 =
+        "{\"DATA\":{\"https://example.test/a.pkg\":{\"title_id\":\"ABCD00001\",\"name\":\"";
+    invalid_utf8.push_back(static_cast<char>(0xC0));
+    invalid_utf8 += "\",\"version\":\"1\",\"size\":\"1\"}}}";
+    expect(!parses(invalid_utf8), "invalid raw UTF-8 is rejected");
+
+    std::string deeply_nested = "{\"DATA\":";
+    for (int i = 0; i < 20; ++i) deeply_nested += "[";
+    deeply_nested += "0";
+    for (int i = 0; i < 20; ++i) deeply_nested += "]";
+    deeply_nested += "}";
+    expect(!parses(deeply_nested), "excessive JSON nesting is rejected");
+
+    std::string too_many_nodes = "{\"DATA\":[";
+    too_many_nodes.reserve(340000);
+    for (int i = 0; i < 65536; ++i) {
+        if (i) too_many_nodes += ",";
+        too_many_nodes += "null";
+    }
+    too_many_nodes += "]}";
+    expect(!parses(too_many_nodes), "excessive JSON node count is rejected");
+
+    std::string too_many_items = "{\"DATA\":{";
+    too_many_items.reserve(180000);
+    for (int i = 0; i < 4097; ++i) {
+        if (i) too_many_items += ",";
+        too_many_items += "\"https://example.test/" + std::to_string(i) + ".pkg\":{}";
+    }
+    too_many_items += "}}";
+    expect(!parses(too_many_items), "catalog package-count limit is enforced");
 }
 
 void test_url_policy() {
@@ -80,12 +127,20 @@ void test_url_policy() {
     expect(!fpkgi::validate_http_url("https://example..test/pkg.pkg", error), "malformed host is rejected");
     error.clear();
     expect(!fpkgi::validate_http_url("https://example.test/bad%2.pkg", error), "invalid percent escape is rejected");
+    error.clear();
+    expect(!fpkgi::validate_http_url("https://[:::]/pkg.pkg", error), "malformed IPv6 host is rejected");
 
     std::string resolved;
     error.clear();
     expect(fpkgi::resolve_redirect_url("https://example.test/a/catalog.json", "../pkg.pkg", resolved, error) &&
                resolved == "https://example.test/a/../pkg.pkg",
            "relative HTTPS redirect is resolved without changing authority");
+    error.clear();
+    expect(fpkgi::resolve_redirect_url(
+               "https://example.test/a/catalog.json",
+               "/download?return=https://owner.example/done", resolved, error) &&
+               resolved == "https://example.test/download?return=https://owner.example/done",
+           "relative redirect containing an absolute URL in its query is resolved");
     error.clear();
     expect(!fpkgi::resolve_redirect_url("https://example.test/a", "//other.test/pkg", resolved, error),
            "protocol-relative redirect is rejected");
@@ -130,11 +185,15 @@ void test_pem_bundle() {
     std::string packaged_bundle;
     error.clear();
     const bool packaged_ok =
-        fpkgi::load_text_file("assets/cacert.pem", packaged_bundle, error) &&
+        fpkgi::load_text_file("assets/cacert.pem", 1024 * 1024, packaged_bundle, error) &&
         fpkgi::parse_pem_bundle(packaged_bundle, certificates, error);
     expect(packaged_ok, "packaged Mozilla CA bundle parses");
     expect(packaged_ok && certificates.size() >= 100,
            "packaged Mozilla CA bundle contains the expected root set");
+    std::string rejected_bundle;
+    error.clear();
+    expect(!fpkgi::load_text_file("assets/cacert.pem", 1, rejected_bundle, error),
+           "bounded file loader rejects oversized local input");
 
     error.clear();
     expect(!fpkgi::parse_pem_bundle("-----BEGIN CERTIFICATE-----\nQUJD\n",
@@ -169,6 +228,14 @@ void test_package_verification() {
     expect(!fpkgi::verify_package_file(path, sizeof(payload), std::string(64, '0'), result, error),
            "SHA-256 mismatch is rejected");
 
+
+    const char* link_path = "build/contract-test-link.pkg";
+    std::remove(link_path);
+    expect(symlink("contract-test.pkg", link_path) == 0, "package symlink fixture is created");
+    error.clear();
+    expect(!fpkgi::verify_package_file(link_path, sizeof(payload), digest, result, error),
+           "package verification rejects a symlink path");
+    std::remove(link_path);
     std::fstream corrupt(path, std::ios::binary | std::ios::in | std::ios::out);
     const char zero = 0;
     corrupt.write(&zero, 1);

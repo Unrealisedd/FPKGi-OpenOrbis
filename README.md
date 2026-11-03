@@ -4,7 +4,7 @@ FPKGi Native is a small OpenOrbis PS4 homebrew client for lawful homebrew and ow
 
 ## Supported scope
 
-Version 1.00 provides catalog browsing, HTTP/HTTPS catalog and package transfer, exact size/PS4 PKG magic/optional SHA-256 verification, BGFT installation, AppInstUtil completion checks, and SDL2 progress/error UI. Cross downloads and installs the selected item, Triangle refreshes the catalog, and Circle exits only while idle.
+Version 1.00 provides catalog browsing, HTTP/HTTPS catalog and package transfer, exact size/PS4 PKG magic/SHA-256 verification (required for HTTP packages, optional for HTTPS packages), BGFT installation, AppInstUtil completion checks, and SDL2 progress/error UI. Cross downloads and installs the selected item, Triangle refreshes the catalog, and Circle exits only while idle.
 
 Full Unity visual parity, a durable queue, transfer resume/retry, and cancellation are outside this native-core release. The bundled catalog is intentionally empty and the application does not provide package content, credentials, entitlement bypasses, or commercial-package links.
 
@@ -18,7 +18,7 @@ The maintained remote catalog is:
 https://raw.githubusercontent.com/Unrealisedd/FPKGi-OpenOrbis/main/catalog/catalog.json
 ```
 
-Validated catalog cache and downloads use `/data/FPKGi`. A download is written to a `.part` file, bounded by the declared size, and renamed to `.pkg` only after exact size, `7F 43 4E 54` magic, and optional SHA-256 verification. Failed or ambiguous transfers/installations retain local data for inspection. See [docs/catalog.md](docs/catalog.md).
+Validated catalog cache and downloads use private `0700` directories under `/data/FPKGi`; cache, staging, and verification opens reject symlinks. A download is written to a `.part` file, bounded by the declared size, and renamed to `.pkg` only after exact size, `7F 43 4E 54` magic, and the required SHA-256 policy. Failed or ambiguous transfers/installations retain local data for inspection. See [docs/catalog.md](docs/catalog.md).
 
 HTTPS validation uses the pinned Mozilla CA root bundle in `assets/cacert.pem`; automatic redirects are disabled so every redirect is revalidated and HTTPS-to-HTTP downgrade is rejected. The bundle SHA-256 is `a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505`.
 

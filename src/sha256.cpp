@@ -82,24 +82,33 @@ void final(Sha256Context& ctx, uint8_t hash[32]) {
 
 } // namespace
 
-bool sha256_file(const char* path, std::string& digest, std::string& error) {
-    FILE* file = fopen(path, "rb");
-    if (!file) { error = "cannot open downloaded file for hashing"; return false; }
-    Sha256Context ctx; init(ctx);
+bool sha256_stream(FILE* file, std::string& digest, std::string& error) {
+    if (!file) {
+        error = "cannot hash a null package stream";
+        return false;
+    }
+    Sha256Context ctx;
+    init(ctx);
     uint8_t buffer[64 * 1024];
     for (;;) {
         const size_t count = fread(buffer, 1, sizeof(buffer), file);
         if (count) update(ctx, buffer, count);
         if (count < sizeof(buffer)) {
-            if (ferror(file)) { fclose(file); error = "failed while hashing downloaded file"; return false; }
+            if (ferror(file)) {
+                error = "failed while hashing downloaded file";
+                return false;
+            }
             break;
         }
     }
-    fclose(file);
-    uint8_t hash[32]; final(ctx, hash);
+    uint8_t hash[32];
+    final(ctx, hash);
     static const char hex[] = "0123456789abcdef";
     digest.assign(64, '0');
-    for (int i = 0; i < 32; ++i) { digest[i*2] = hex[hash[i] >> 4]; digest[i*2+1] = hex[hash[i] & 0x0f]; }
+    for (int i = 0; i < 32; ++i) {
+        digest[i * 2] = hex[hash[i] >> 4];
+        digest[i * 2 + 1] = hex[hash[i] & 0x0f];
+    }
     return true;
 }
 

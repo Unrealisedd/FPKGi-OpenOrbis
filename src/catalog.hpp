@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stddef.h>
 #include <string>
 #include <vector>
 
@@ -26,6 +27,6 @@ bool validate_http_url(const std::string& url, std::string& error);
 bool resolve_redirect_url(const std::string& current_url, const std::string& location,
                           std::string& resolved_url, std::string& error);
 std::string canonical_package_filename(const CatalogItem& item);
-bool load_text_file(const char* path, std::string& content, std::string& error);
+bool load_text_file(const char* path, size_t max_bytes, std::string& content, std::string& error);
 
 } // namespace fpkgi

@@ -58,7 +58,8 @@ private:
 
 class JsonParser {
 public:
-    explicit JsonParser(const std::string& input) : input_(input), pos_(0) {}
+    explicit JsonParser(const std::string& input)
+        : input_(input), pos_(0), depth_(0), nodes_(0) {}
 
     Json parse() {
         skip_ws();
@@ -69,11 +70,19 @@ public:
     }
 
 private:
+    enum { kMaxDepth = 16, kMaxNodes = 65536 };
+
     Json parse_value() {
         if (pos_ >= input_.size()) error("unexpected end of input");
+        if (++nodes_ > kMaxNodes) error("JSON node limit exceeded");
         const char c = input_[pos_];
-        if (c == '{') return parse_object();
-        if (c == '[') return parse_array();
+        if (c == '{' || c == '[') {
+            if (depth_ >= kMaxDepth) error("JSON nesting limit exceeded");
+            ++depth_;
+            Json value = c == '{' ? parse_object() : parse_array();
+            --depth_;
+            return value;
+        }
         if (c == '"') return Json::make_string(parse_string());
         if (c == 't') { consume_literal("true"); return Json::make_bool(true); }
         if (c == 'f') { consume_literal("false"); return Json::make_bool(false); }
@@ -124,7 +133,10 @@ private:
         std::string out;
         while (pos_ < input_.size()) {
             const char c = input_[pos_++];
-            if (c == '"') return out;
+            if (c == '"') {
+                if (!valid_utf8(out)) error("invalid UTF-8 in string");
+                return out;
+            }
             if (static_cast<unsigned char>(c) < 0x20) error("control character in string");
             if (c != '\\') { out.push_back(c); continue; }
             if (pos_ >= input_.size()) error("incomplete escape sequence");
@@ -138,7 +150,7 @@ private:
                 case 'n': out.push_back('\n'); break;
                 case 'r': out.push_back('\r'); break;
                 case 't': out.push_back('\t'); break;
-                case 'u': append_unicode(out, parse_hex4()); break;
+                case 'u': append_unicode(out, parse_unicode_escape()); break;
                 default: error("invalid escape sequence");
             }
         }
@@ -160,13 +172,60 @@ private:
         return value;
     }
 
+    unsigned parse_unicode_escape() {
+        const unsigned high = parse_hex4();
+        if (high >= 0xD800 && high <= 0xDBFF) {
+            if (pos_ + 2 > input_.size() || input_[pos_] != '\\' || input_[pos_ + 1] != 'u')
+                error("high surrogate without a low surrogate");
+            pos_ += 2;
+            const unsigned low = parse_hex4();
+            if (low < 0xDC00 || low > 0xDFFF) error("invalid low surrogate");
+            return 0x10000 + ((high - 0xD800) << 10) + (low - 0xDC00);
+        }
+        if (high >= 0xDC00 && high <= 0xDFFF) error("unexpected low surrogate");
+        return high;
+    }
+
+    static bool valid_utf8(const std::string& value) {
+        size_t i = 0;
+        while (i < value.size()) {
+            const unsigned char lead = static_cast<unsigned char>(value[i]);
+            if (lead <= 0x7F) {
+                ++i;
+                continue;
+            }
+
+            size_t continuation = 0;
+            if (lead >= 0xC2 && lead <= 0xDF) continuation = 1;
+            else if (lead >= 0xE0 && lead <= 0xEF) continuation = 2;
+            else if (lead >= 0xF0 && lead <= 0xF4) continuation = 3;
+            else return false;
+            if (i + continuation >= value.size()) return false;
+
+            const unsigned char second = static_cast<unsigned char>(value[i + 1]);
+            if ((lead == 0xE0 && second < 0xA0) ||
+                (lead == 0xED && second > 0x9F) ||
+                (lead == 0xF0 && second < 0x90) ||
+                (lead == 0xF4 && second > 0x8F)) return false;
+            for (size_t j = 1; j <= continuation; ++j)
+                if ((static_cast<unsigned char>(value[i + j]) & 0xC0) != 0x80) return false;
+            i += continuation + 1;
+        }
+        return true;
+    }
+
     static void append_unicode(std::string& out, unsigned cp) {
         if (cp <= 0x7F) out.push_back(static_cast<char>(cp));
         else if (cp <= 0x7FF) {
             out.push_back(static_cast<char>(0xC0 | (cp >> 6)));
             out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
-        } else {
+        } else if (cp <= 0xFFFF) {
             out.push_back(static_cast<char>(0xE0 | (cp >> 12)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        } else {
+            out.push_back(static_cast<char>(0xF0 | (cp >> 18)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 12) & 0x3F)));
             out.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
             out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
         }
@@ -230,6 +289,8 @@ private:
 
     const std::string& input_;
     size_t pos_;
+    size_t depth_;
+    size_t nodes_;
 };
 
 inline Json parse_json(const std::string& input) {

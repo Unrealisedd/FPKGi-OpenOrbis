@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -28,7 +29,12 @@ def entry(**overrides: object) -> dict[str, object]:
 class CatalogValidatorTests(unittest.TestCase):
     def test_empty_and_valid_catalogs(self) -> None:
         VALIDATOR.validate_document({"DATA": {}})
-        VALIDATOR.validate_document({"DATA": {"http://lan.example/test.pkg": entry()}})
+        VALIDATOR.validate_document({"DATA": {
+            "http://lan.example/test.pkg": entry(sha256="0" * 64),
+        }})
+        VALIDATOR.validate_document({"DATA": {
+            "https://example.test/unicode.pkg": entry(name="A" * 92 + "\U0001F600"),
+        }})
 
     def test_malformed_metadata_is_rejected(self) -> None:
         invalid_documents = [
@@ -38,6 +44,8 @@ class CatalogValidatorTests(unittest.TestCase):
             {"DATA": {"https://example.test/a.pkg": entry(size=32)}},
             {"DATA": {"https://example.test/a.pkg": entry(size="0")}},
             {"DATA": {"https://example.test/a.pkg": entry(size=str(1 << 64))}},
+            {"DATA": {"https://example.test/a.pkg": entry(name="A" * 93 + "\U0001F600")}},
+            {"DATA": {"http://lan.example/a.pkg": entry()}},
             {"DATA": {"https://user@example.test/a.pkg": entry()}},
             {"DATA": {"https://example.test/a.pkg#fragment": entry()}},
             {"DATA": {"https://example.test:/a.pkg": entry()}},
@@ -62,6 +70,24 @@ class CatalogValidatorTests(unittest.TestCase):
             path.write_text('{"DATA":{},"DATA":{}}', encoding="utf-8")
             with self.assertRaises(ValueError):
                 VALIDATOR.validate(path)
+
+    def test_uint64_schema_pattern_matches_runtime_bounds(self) -> None:
+        schema = json.loads((ROOT / "catalog" / "schema.json").read_text(encoding="utf-8"))
+        pattern = schema["$defs"]["package"]["properties"]["size"]["pattern"]
+        for value in ("1", "0001", "9999999999999999999", str((1 << 64) - 1)):
+            with self.subTest(valid=value):
+                self.assertIsNotNone(re.fullmatch(pattern, value))
+        for value in ("0", str(1 << 64), "99999999999999999999"):
+            with self.subTest(invalid=value):
+                self.assertIsNone(re.fullmatch(pattern, value))
+
+    def test_catalog_item_limit_is_enforced(self) -> None:
+        oversized = {
+            f"https://example.test/{index}.pkg": {}
+            for index in range(VALIDATOR.MAX_ITEMS + 1)
+        }
+        with self.assertRaises(ValueError):
+            VALIDATOR.validate_document({"DATA": oversized})
 
     def test_uppercase_sha_is_accepted(self) -> None:
         VALIDATOR.validate_document({"DATA": {

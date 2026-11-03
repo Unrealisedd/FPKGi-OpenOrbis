@@ -16,6 +16,7 @@ SHA_RE = re.compile(r"^[a-fA-F0-9]{64}$")
 DECIMAL_RE = re.compile(r"^[0-9]+$")
 MAX_UINT64 = (1 << 64) - 1
 MAX_URL = 2048
+MAX_ITEMS = 4096
 ALLOWED_FIELDS = {
     "title_id",
     "region",
@@ -114,6 +115,8 @@ def validate_document(document: Any) -> None:
     data = document["DATA"]
     if not isinstance(data, dict):
         fail("DATA must be an object keyed by package URL")
+    if len(data) > MAX_ITEMS:
+        fail(f"DATA contains more than {MAX_ITEMS} packages")
 
     identities: set[tuple[str, str]] = set()
     for package_url, metadata in data.items():
@@ -146,6 +149,8 @@ def validate_document(document: Any) -> None:
             sha256 = metadata["sha256"]
             if not isinstance(sha256, str) or not SHA_RE.fullmatch(sha256):
                 fail(f"{prefix}.sha256 must be 64 hexadecimal characters")
+        if package_url.lower().startswith("http://") and "sha256" not in metadata:
+            fail(f"{prefix}.sha256 is required for an HTTP package URL")
 
         identity = (title_id, version)
         if identity in identities:

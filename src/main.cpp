@@ -8,9 +8,11 @@
 #include <orbis/libkernel.h>
 
 #include <algorithm>
+#include <cerrno>
 #include <cstdio>
 #include <cstring>
 #include <limits>
+#include <fcntl.h>
 #include <pthread.h>
 #include <sstream>
 #include <string>
@@ -30,6 +32,7 @@ const char* kBundledCatalog = "/app0/catalog.json";
 const char* kDataDirectory = "/data/FPKGi";
 const char* kCachedCatalog = "/data/FPKGi/catalog.json";
 const char* kDownloadDirectory = "/data/FPKGi/downloads";
+const size_t kMaxCatalogBytes = 2 * 1024 * 1024;
 const uint64_t kFreeSpaceReserve = 64ULL * 1024ULL * 1024ULL;
 const int kInstallPollLimit = 7200;
 const uint32_t kInstallPollDelayUs = 500000;
@@ -38,6 +41,7 @@ const int kInstallStablePolls = 4;
 struct SharedState {
     pthread_mutex_t mutex;
     std::vector<CatalogItem> items;
+    fpkgi::HttpClient http;
     bool job_running;
     std::string status;
     uint64_t current;
@@ -47,7 +51,10 @@ struct SharedState {
     SharedState() : job_running(false), status("STARTING"), current(0), total(0), last_error_code(0) {
         pthread_mutex_init(&mutex, 0);
     }
-    ~SharedState() { pthread_mutex_destroy(&mutex); }
+    ~SharedState() {
+        http.shutdown();
+        pthread_mutex_destroy(&mutex);
+    }
 };
 
 enum JobType { JobRefresh, JobInstall };
@@ -58,20 +65,44 @@ struct JobArgs {
     CatalogItem item;
 };
 
-void ensure_directories() {
-    mkdir(kDataDirectory, 0777);
-    mkdir(kDownloadDirectory, 0777);
+bool ensure_private_directory(const char* path, std::string& error) {
+    if (mkdir(path, 0700) != 0 && errno != EEXIST) {
+        error = std::string("cannot create ") + path + ": " + std::strerror(errno);
+        return false;
+    }
+    struct stat info;
+    if (lstat(path, &info) != 0 || !S_ISDIR(info.st_mode)) {
+        error = std::string(path) + " is not a real directory";
+        return false;
+    }
+    if (chmod(path, 0700) != 0) {
+        error = std::string("cannot secure ") + path + ": " + std::strerror(errno);
+        return false;
+    }
+    return true;
+}
+
+bool ensure_directories(std::string& error) {
+    return ensure_private_directory(kDataDirectory, error) &&
+           ensure_private_directory(kDownloadDirectory, error);
 }
 
 void set_status(SharedState* state, const std::string& status, bool running, int32_t error_code = 0) {
     pthread_mutex_lock(&state->mutex);
     state->status = status;
-    state->job_running = running;
     state->last_error_code = error_code;
     if (!running) {
         state->current = 0;
         state->total = 0;
     }
+    pthread_mutex_unlock(&state->mutex);
+}
+
+void finish_job(SharedState* state) {
+    pthread_mutex_lock(&state->mutex);
+    state->job_running = false;
+    state->current = 0;
+    state->total = 0;
     pthread_mutex_unlock(&state->mutex);
 }
 
@@ -85,9 +116,15 @@ void progress_callback(uint64_t current, uint64_t total, void* user) {
 
 bool atomic_save_catalog(const std::string& value, std::string& error) {
     const std::string temporary = std::string(kCachedCatalog) + ".tmp";
-    FILE* file = std::fopen(temporary.c_str(), "wb");
+    const int fd = open(temporary.c_str(), O_WRONLY | O_CREAT | O_TRUNC | O_NOFOLLOW, 0600);
+    if (fd < 0) {
+        error = "cannot securely create catalog temporary file";
+        return false;
+    }
+    FILE* file = fdopen(fd, "wb");
     if (!file) {
-        error = "cannot create catalog temporary file";
+        close(fd);
+        error = "cannot open catalog temporary stream";
         return false;
     }
     bool ok = std::fwrite(value.data(), 1, value.size(), file) == value.size();
@@ -156,14 +193,13 @@ std::string human_bytes(uint64_t bytes) {
 
 void refresh_catalog(SharedState* state) {
     set_status(state, "REFRESHING CATALOG", true);
-    fpkgi::HttpClient http;
     std::string error;
-    if (!http.initialize(error)) {
+    if (!state->http.initialize(error)) {
         set_status(state, "CATALOG REFRESH FAILED - CURRENT LIST KEPT: " + error, false);
         return;
     }
     std::string json;
-    if (!http.get_text(kCatalogUrl, 2 * 1024 * 1024, json, error)) {
+    if (!state->http.get_text(kCatalogUrl, kMaxCatalogBytes, json, error)) {
         set_status(state, "CATALOG REFRESH FAILED - CURRENT LIST KEPT: " + error, false);
         return;
     }
@@ -180,7 +216,6 @@ void refresh_catalog(SharedState* state) {
     pthread_mutex_lock(&state->mutex);
     state->items.swap(parsed);
     state->status = "CATALOG UPDATED";
-    state->job_running = false;
     state->current = state->total = 0;
     state->last_error_code = 0;
     pthread_mutex_unlock(&state->mutex);
@@ -210,13 +245,12 @@ void install_package(SharedState* state, const CatalogItem& item) {
         set_status(state, space_known ? "DOWNLOADING " + item.name
                                       : "FREE SPACE UNKNOWN; DOWNLOADING " + item.name,
                    true);
-        fpkgi::HttpClient http;
-        if (!http.initialize(error)) {
+        if (!state->http.initialize(error)) {
             set_status(state, "NETWORK INIT FAILED: " + error, false);
             return;
         }
         uint64_t downloaded = 0;
-        if (!http.download(item.pkg_url, partial_path.c_str(), item.size_bytes,
+        if (!state->http.download(item.pkg_url, partial_path.c_str(), item.size_bytes,
                            progress_callback, state, downloaded, error)) {
             set_status(state, "DOWNLOAD FAILED - PARTIAL KEPT: " + error, false);
             return;
@@ -306,6 +340,7 @@ void* job_main(void* raw) {
 
     if (type == JobRefresh) refresh_catalog(state);
     else install_package(state, item);
+    finish_job(state);
     return 0;
 }
 
@@ -329,6 +364,7 @@ bool start_job(SharedState& state, JobType type, const CatalogItem* item) {
     if (pthread_create(&thread, 0, job_main, args) != 0) {
         delete args;
         set_status(&state, "COULD NOT CREATE WORKER THREAD", false);
+        finish_job(&state);
         return false;
     }
     pthread_detach(thread);
@@ -339,7 +375,7 @@ void load_initial_catalog(SharedState& state) {
     std::string json;
     std::string error;
     std::vector<CatalogItem> parsed;
-    if (fpkgi::load_text_file(kCachedCatalog, json, error) &&
+    if (fpkgi::load_text_file(kCachedCatalog, kMaxCatalogBytes, json, error) &&
         fpkgi::parse_catalog(json, parsed, error)) {
         state.items.swap(parsed);
         state.status = "CACHED CATALOG LOADED";
@@ -347,7 +383,7 @@ void load_initial_catalog(SharedState& state) {
     }
     json.clear();
     parsed.clear();
-    if (fpkgi::load_text_file(kBundledCatalog, json, error) &&
+    if (fpkgi::load_text_file(kBundledCatalog, kMaxCatalogBytes, json, error) &&
         fpkgi::parse_catalog(json, parsed, error)) {
         state.items.swap(parsed);
         state.status = "BUNDLED EMPTY CATALOG LOADED";
@@ -447,7 +483,12 @@ void render(SDL_Renderer* renderer, SharedState& state, int selected) {
 
 int main(int, char**) {
     setvbuf(stdout, 0, _IONBF, 0);
-    ensure_directories();
+    umask(0077);
+    std::string storage_error;
+    if (!ensure_directories(storage_error)) {
+        std::fprintf(stderr, "FPKGi storage initialization failed: %s\n", storage_error.c_str());
+        return 4;
+    }
     SharedState state;
     load_initial_catalog(state);
 

@@ -9,10 +9,12 @@
 
 #include <cstdio>
 #include <cstring>
+#include <fcntl.h>
 #include <sstream>
 #include <new>
 
 #include <vector>
+#include <unistd.h>
 extern "C" {
 // OpenOrbis v0.5.4 exports these symbols but its public headers omit their parameters.
 int32_t fpkgiHttpSetAutoRedirect(int32_t id, int32_t enabled)
@@ -66,7 +68,7 @@ std::string native_error(const char* operation, int32_t code) {
 
 bool load_https_trust(int http_context, TrustStore*& trust, std::string& error) {
     std::string bundle;
-    if (!load_text_file(kCaBundlePath, bundle, error)) {
+    if (!load_text_file(kCaBundlePath, 1024 * 1024, bundle, error)) {
         error = "cannot read packaged HTTPS CA bundle: " + error;
         return false;
     }
@@ -359,9 +361,16 @@ bool HttpClient::download(const std::string& url, const char* destination, uint6
         return false;
     }
 
-    FILE* file = std::fopen(destination, "wb");
+    const int fd = open(destination, O_WRONLY | O_CREAT | O_TRUNC | O_NOFOLLOW, 0600);
+    if (fd < 0) {
+        error = "cannot securely create partial package file";
+        close_request(handles);
+        return false;
+    }
+    FILE* file = fdopen(fd, "wb");
     if (!file) {
-        error = "cannot create partial package file";
+        close(fd);
+        error = "cannot open partial package stream";
         close_request(handles);
         return false;
     }
@@ -392,8 +401,16 @@ bool HttpClient::download(const std::string& url, const char* destination, uint6
         downloaded_bytes += amount;
         if (callback) callback(downloaded_bytes, expected_size, user);
     }
-    if (std::fclose(file) != 0 && ok) {
+    if (ok && std::fflush(file) != 0) {
         error = "failed to flush partial package file";
+        ok = false;
+    }
+    if (ok && fsync(fileno(file)) != 0) {
+        error = "failed to sync partial package file";
+        ok = false;
+    }
+    if (std::fclose(file) != 0 && ok) {
+        error = "failed to close partial package file";
         ok = false;
     }
     close_request(handles);
