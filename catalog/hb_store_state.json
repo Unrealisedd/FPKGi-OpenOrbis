@@ -1,0 +1,1185 @@
+{
+  "packages": {
+    "AZIF00003": {
+      "app_type": "utility",
+      "name": "Payload Guest",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "34865152",
+      "source_md5": "a22b0657cf7a935a4d0f72c9857548bf",
+      "version": "0.98"
+    },
+    "BALL00001": {
+      "app_type": "game",
+      "name": "Ball Blaster",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "58064896",
+      "source_md5": "b7720750514e0442d94e08f9c54d663f",
+      "version": "1.00"
+    },
+    "BBAR00505": {
+      "app_type": "game",
+      "name": "B&nder Bar",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "19333120",
+      "source_md5": "cf227807ba03250c37d838f20bfbbf40",
+      "version": "1.00"
+    },
+    "BBFF12362": {
+      "app_type": "hb game",
+      "name": "Kill'em All.",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "1423507456",
+      "source_md5": "6c15f8376de966f0124e9ae6987b303b",
+      "version": "1.00"
+    },
+    "BORC00007": {
+      "app_type": "game",
+      "name": "Crisis evil 2",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "103481344",
+      "source_md5": "180cc79686537d81a1b261e9c2e2ddfb",
+      "version": "1.00"
+    },
+    "BORC00014": {
+      "app_type": "game",
+      "name": "Street Fighter Beats Of Rage Remix 2",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "99942400",
+      "source_md5": "abecf15ec9f687fae4eed1ac5b1fc1e6",
+      "version": "1.00"
+    },
+    "BORC00018": {
+      "app_type": "game",
+      "name": "Golden Axe Curse Of The Death Adder",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "58327040",
+      "source_md5": "3cccb700d8ca391fbdebe9e14e4cc08f",
+      "version": "1.00"
+    },
+    "BORC00024": {
+      "app_type": "game",
+      "name": "Mega Man War Of the Past",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "106496000",
+      "source_md5": "765fae66c290fcdd54b47b548ce63820",
+      "version": "1.00"
+    },
+    "BORC00078": {
+      "app_type": "game",
+      "name": "Batman Gotham Knights",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "82116608",
+      "source_md5": "87a3ee34effa5009566f98fc35c7ddf4",
+      "version": "1.00"
+    },
+    "BORP09801": {
+      "app_type": "game",
+      "name": "Mortal Kombat Konquest",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "193396736",
+      "source_md5": "12a22753053a32ccdcf746f200eb467e",
+      "version": "1.00"
+    },
+    "BORR00007": {
+      "app_type": "game",
+      "name": "Cadillacs and Dinosaurs",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "65339392",
+      "source_md5": "27f82d81c854417e5a99c0618f4c519a",
+      "version": "1.00"
+    },
+    "BORR00044": {
+      "app_type": "games",
+      "name": "Night Slashers X",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "51183616",
+      "source_md5": "63d811ed3b4971138430e81a8180b216",
+      "version": "1.00"
+    },
+    "BREW00009": {
+      "app_type": "utility",
+      "name": "Tiny PS4 Shell (Telnet Shell)",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "source_md5": "5f272ee762a1ee34aab04e82afafcae1",
+      "version": "0.0.1"
+    },
+    "BREW00080": {
+      "app_type": "utility",
+      "name": "OpenOrbis Audio Sample",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "30474240",
+      "source_md5": "1870c2f1bae8dae900b85cbfbbddb3fd",
+      "version": "1.00"
+    },
+    "BREW00081": {
+      "app_type": "utility",
+      "name": "OpenOrbis Font Sample",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "source_md5": "2ede8504e2562164c76873c496d14a9d",
+      "version": "1.00"
+    },
+    "BREW00082": {
+      "app_type": "utility",
+      "name": "OpenOrbis Graphics Sample",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "source_md5": "64e15faf6f630a735d86d4301aac4fa3",
+      "version": "1.00"
+    },
+    "BREW00084": {
+      "app_type": "utility",
+      "name": "OpenOrbis Input Sample",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "source_md5": "ddb76912e46a005054ba4cdfef787fda",
+      "version": "1.00"
+    },
+    "BREW00086": {
+      "app_type": "utility",
+      "name": "OpenOrbis PNG Sample",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "source_md5": "3f09ced8b5c7ccc866e01b17bdeb92fb",
+      "version": "1.02"
+    },
+    "BREW00088": {
+      "app_type": "utility",
+      "name": "OpenOrbis System Sample",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "source_md5": "24ed1f892a65829345f0461895bd33a2",
+      "version": "1.00"
+    },
+    "BREW00090": {
+      "app_type": "hb game",
+      "name": "OpenOrbis SDL Sample",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "source_md5": "9d381a62e56bcc4dffcc6f022623fe8a",
+      "version": "1.00"
+    },
+    "BREW00179": {
+      "app_type": "utility",
+      "name": "LogMeIn Hamachi (UNOFFICIAL)",
+      "platform_marker": "5.05, 6.72, 7.02, 7.5x, 9.00",
+      "release": "2024-05-10",
+      "size": "7798784",
+      "source_md5": "49a04899d4664e323b662dac680a7239",
+      "version": "0.2.3"
+    },
+    "BREW34965": {
+      "app_type": "emulator",
+      "name": "PS4 P-8 / Pico8",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "7208960",
+      "source_md5": "89d1d4458f315b81249b2170a1db43d1",
+      "version": "0.10"
+    },
+    "BREW69420": {
+      "app_type": "utility",
+      "name": "Brew",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "2752512",
+      "source_md5": "0f49bfb6067f96d291778f7e27058abf",
+      "version": "1.00"
+    },
+    "BREW91909": {
+      "app_type": "hb game",
+      "name": "Is it, or isn't?",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "15597568",
+      "source_md5": "d808b415baf947ff5e816caeb6268cfc",
+      "version": "1.00"
+    },
+    "CDRR00001": {
+      "app_type": "game",
+      "name": "Chip and Dale: Remastered",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "100466688",
+      "source_md5": "cfabbc8a9358c9ea4cb08b6279620696",
+      "version": "1.00"
+    },
+    "CHIP80020": {
+      "app_type": "emulator",
+      "name": "Chip 8",
+      "platform_marker": "7.50+, 9.00",
+      "release": "2024-05-10",
+      "size": "7012352",
+      "source_md5": "4995bbc5018b15b9a22d07a883165523",
+      "version": "1.04"
+    },
+    "CHTM00777": {
+      "app_type": "utility",
+      "name": "PS4 Cheats Manager",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "19202048",
+      "source_md5": "3988fd9009d90a92325e24991d682331",
+      "version": "1.2.2"
+    },
+    "CREP00001": {
+      "app_type": "game",
+      "name": "CreeperDiver",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "19070976",
+      "source_md5": "0ac87192de018c8e599e1a1dedc528e1",
+      "version": "1.00"
+    },
+    "CUSB00000": {
+      "app_type": "emulator",
+      "name": "RetroArch NES (PS2)",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "67895296",
+      "source_md5": "9d96a69cdb5018965bbf47db040a9474",
+      "version": "1.00"
+    },
+    "CUSB00001": {
+      "app_type": "emulator",
+      "name": "RetroArch 2048 (PS2)",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "68681728",
+      "source_md5": "e465c17daf977d534e2bc5a83105cb5e",
+      "version": "1.00"
+    },
+    "CUSB00002": {
+      "app_type": "emulator",
+      "name": "Emu Mégadrive/Genesis (PS2)",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "26935296",
+      "source_md5": "c57bc8b7af9f9686fc36c6edec6ff5be",
+      "version": "1.00"
+    },
+    "CUSB00005": {
+      "app_type": "emulator",
+      "name": "Emu Game Boy Advance (PS2)",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "23855104",
+      "source_md5": "bd09f21970e3962cac4c37a2a3b9da29",
+      "version": "1.00"
+    },
+    "CUSB99999": {
+      "app_type": "emulator",
+      "name": "RetroArch QuickNES (PS2)",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "26345472",
+      "source_md5": "14dc648dceb68ce52a0c0a1a1c7cdcee",
+      "version": "1.00"
+    },
+    "CUSC00000": {
+      "app_type": "emulator",
+      "name": "Emu Master System (PSP)",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "124583936",
+      "source_md5": "123a7da1e19d2146351e9b4f2581dd2c",
+      "version": "1.00"
+    },
+    "FTPC00001": {
+      "app_type": "utility",
+      "name": "PS4 FTP Client",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "30801920",
+      "source_md5": "bbc792bad1ea236d762f919a480b1081",
+      "version": "1.0.8"
+    },
+    "GMSP00006": {
+      "app_type": "game",
+      "name": "SHEPHARD",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "18022400",
+      "source_md5": "5ae9083e515bef48859316b0d192d3b8",
+      "version": "1.00"
+    },
+    "ITEM00001": {
+      "app_type": "utility",
+      "name": "Itemzflow Game Manager",
+      "platform_marker": "5.05+ != 6.72",
+      "release": "2025-06-22",
+      "size": "27131904",
+      "source_md5": "f67547c372e28f2fcf8a0e913e5e9c9f",
+      "version": "1.08"
+    },
+    "KRGR00001": {
+      "app_type": "game",
+      "name": "Hamer!! (PORT)",
+      "platform_marker": "9.00, 9.60, 10.01, 11.00",
+      "release": "2025-11-26",
+      "size": "235667456",
+      "source_md5": "a5c2bc03667a3f36f8adb57c8abdf7e2",
+      "version": "1.00"
+    },
+    "LAPY10004": {
+      "app_type": "hb game",
+      "name": "Overcome",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "87883776",
+      "source_md5": "e56e8584baf13fb6df55320e3fd52aa3",
+      "version": "1.03"
+    },
+    "LAPY10005": {
+      "app_type": "hb game",
+      "name": "Overcome Save the Girl",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "100728832",
+      "source_md5": "3b3d0beb327bcc4016433a83edaedc26",
+      "version": "1.00"
+    },
+    "LAPY10007": {
+      "app_type": "game",
+      "name": "Shoot Test",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "86507520",
+      "source_md5": "5e186d24157a46187f24be0fd28913a4",
+      "version": "1.01"
+    },
+    "LAPY10008": {
+      "app_type": "game",
+      "name": "Duck Hunt Remake",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "98369536",
+      "source_md5": "66b3e12caeefe7e070ce37a6cae11433",
+      "version": "1.01"
+    },
+    "LAPY10009": {
+      "app_type": "hb game",
+      "name": "Wild Gunman Remake",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "112525312",
+      "source_md5": "d234064fd60817983edf1e5e134642f3",
+      "version": "1.02"
+    },
+    "LAPY10010": {
+      "app_type": "hb game",
+      "name": "PS Scene The Quiz Game",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "261685248",
+      "source_md5": "64fc4c183eaea693512db0474dfeb943",
+      "version": "1.01"
+    },
+    "LAPY10012": {
+      "app_type": "hb game",
+      "name": "Lapy Games Collection",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "192282624",
+      "source_md5": "6bcc74c4025a234f1e4e8a645ce12133",
+      "version": "1.00"
+    },
+    "LAPY10015": {
+      "app_type": "game",
+      "name": "Super Console Wars",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "183894016",
+      "source_md5": "beca75fdb6311a6eb83c54536214ed68",
+      "version": "1.00"
+    },
+    "LAPY10016": {
+      "app_type": "game",
+      "name": "Nanospeed The Game",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "102825984",
+      "source_md5": "09c4a08e51fc54b9de374092d09cf00b",
+      "version": "1.00"
+    },
+    "LAPY10017": {
+      "app_type": "hb game",
+      "name": "Brain Splitter",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "103415808",
+      "source_md5": "610d3a3dfc51941461489a6378ac0f91",
+      "version": "1.01"
+    },
+    "LAPY10018": {
+      "app_type": "hb game",
+      "name": "Ghost of Tsushima Mini Games",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "91488256",
+      "source_md5": "4d1ae92c6135b98ee464aaf107273ec1",
+      "version": "1.00"
+    },
+    "LAPY10023": {
+      "app_type": "hb game",
+      "name": "I Know that Song",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "226033664",
+      "source_md5": "293412a68cdb6ad26fa8579e782cf330",
+      "version": "1.00"
+    },
+    "LAPY10025": {
+      "app_type": "game",
+      "name": "Senua's Saga Hellblade II",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-11-26",
+      "size": "60358656",
+      "source_md5": "f585dbb81309a78b221ac117e2f15f66",
+      "version": "1.04"
+    },
+    "LAPY20002": {
+      "app_type": "utility",
+      "name": "PS4 Player",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "52428800",
+      "source_md5": "f5fecefa0beca0142170cbcb27fdc625",
+      "version": "1.08"
+    },
+    "LAPY20004": {
+      "app_type": "utility",
+      "name": "PS4 App Lock",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "53936128",
+      "source_md5": "e136b07cc457c129fd02e9b8df0bcf91",
+      "version": "1.07"
+    },
+    "LAPY20006": {
+      "app_type": "utility",
+      "name": "PS4 Temperature",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "50331648",
+      "source_md5": "ff38606096fb0f4d7278bd953ae3aced",
+      "version": "1.07"
+    },
+    "LAPY20007": {
+      "app_type": "utility",
+      "name": "Icon Mask",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "74055680",
+      "source_md5": "e79f84584c9e937206e5958e3b48eb87",
+      "version": "1.16"
+    },
+    "LAPY20009": {
+      "app_type": "utility",
+      "name": "PS4-Xplorer 2.0",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "63766528",
+      "source_md5": "96631db920e4994b241be2898316d7fb",
+      "version": "2.07"
+    },
+    "LAPY20010": {
+      "app_type": "utility",
+      "name": "PS4 Kernel BTTF",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "52822016",
+      "source_md5": "c61367a469a6a0259b875e62686fb16f",
+      "version": "1.00"
+    },
+    "LAPY20014": {
+      "app_type": "utility",
+      "name": "PS4 Player 3D",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "57475072",
+      "source_md5": "94685a2b5bd0233530d373f01c8610cb",
+      "version": "1.01"
+    },
+    "LAPY20015": {
+      "app_type": "utility",
+      "name": "Avatar Changer",
+      "platform_marker": "5.05+",
+      "release": "2025-02-24",
+      "size": "54788096",
+      "source_md5": "0d02387a6778d4a5406dd38258526b69",
+      "version": "1.02"
+    },
+    "MAND00001": {
+      "app_type": "homebrew",
+      "name": "Mandelbrot Zoom",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2026-08-16",
+      "size": "7143424",
+      "source_md5": "ddc683dc16fd1ede79017829c5f3475c",
+      "version": "1.00"
+    },
+    "MARK00095": {
+      "app_type": "game",
+      "name": "Resident Evil CODE: Ps4",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "27066368",
+      "source_md5": "03aaf2bcd67bc7e2879467f780902a04",
+      "version": "1.00"
+    },
+    "MEDN00001": {
+      "app_type": "emulator",
+      "name": "Mednafen",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "33554432",
+      "source_md5": "7897b4bd3889cb1bac9ecb32c3baf2e4",
+      "version": "1.00"
+    },
+    "MRPH00001": {
+      "app_type": "emulator",
+      "name": "ps4Gearsystem",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "source_md5": "68e8345c664383cccf3240cca0593d3b",
+      "version": "1.00"
+    },
+    "NPXS29129": {
+      "app_type": "hb game",
+      "name": "A GameMaker: Studio Game",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "32571392",
+      "source_md5": "cebfc7ee04d490f655a48c61fc74a7d8",
+      "version": "1.00"
+    },
+    "NPXX10001": {
+      "app_type": "game",
+      "name": "El Pollo de Lapy",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "65208320",
+      "source_md5": "c473273278cc54d33401da5f5266ae69",
+      "version": "1.00"
+    },
+    "NPXX10002": {
+      "app_type": "game",
+      "name": "Save The Scene",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "108855296",
+      "source_md5": "6b29cbaa611dd7ba46087ce04255762f",
+      "version": "1.00"
+    },
+    "NPXX10003": {
+      "app_type": "game",
+      "name": "El Pollo 2.0",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "90832896",
+      "source_md5": "2aca01345bf7c4709740df5282ec77da",
+      "version": "1.00"
+    },
+    "NPXX10129": {
+      "app_type": "game",
+      "name": "Snake Ball v0.3",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "93913088",
+      "source_md5": "be2697ec0c4ae00d1ae3b3d1d422db2c",
+      "version": "0.3"
+    },
+    "NPXX33362": {
+      "app_type": "utility",
+      "name": "ORBISMAN (BETA)",
+      "platform_marker": "4.55, 5.05",
+      "release": "2024-05-10",
+      "size": "99352576",
+      "source_md5": "ca8ff75e170fdd1ecf8ad7b2db362903",
+      "version": "1.00"
+    },
+    "NPXX33382": {
+      "app_type": "utility",
+      "name": "File Manager for PS4™",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "74776576",
+      "source_md5": "998ae90bea48517d0af34c6d10590d0f",
+      "version": "1.00"
+    },
+    "NPXX33392": {
+      "app_type": "game",
+      "name": "LibOrbis PKG Loader Sample (Tetris)",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "11272192",
+      "source_md5": "690858367c8f84deb17672adfcf66838",
+      "version": "1.00"
+    },
+    "NPXX50003": {
+      "app_type": "game",
+      "name": "tank game",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "118620160",
+      "source_md5": "52d5d54f15e507dfab1e00aab59e1344",
+      "version": "1.00"
+    },
+    "NPXX50004": {
+      "app_type": "game",
+      "name": "SpaceShooter",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "84475904",
+      "source_md5": "c871dc8d90a09e636a1edf4eac945882",
+      "version": "1.00"
+    },
+    "NPXX51351": {
+      "app_type": "game",
+      "name": "Soilder Mayham v1",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "164298752",
+      "source_md5": "e105413659ddf2033b29e195cc7884a8",
+      "version": "1.00"
+    },
+    "NPXX51363": {
+      "app_type": "utility",
+      "name": "MediaPlayer PS4",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "116129792",
+      "source_md5": "0e8805cdec3709bf0c9ea0b920eb500f",
+      "version": "1.00"
+    },
+    "NPXX51364": {
+      "app_type": "utility",
+      "name": "PS4 Controller Homebrew",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-06-07",
+      "size": "115212288",
+      "source_md5": "61d973872231661b29efaa1a6ddeaed9",
+      "version": "1.00"
+    },
+    "NPXX51365": {
+      "app_type": "game",
+      "name": "Roll The Ball for PS4",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "144572416",
+      "source_md5": "568744953fcfa2e6a2fadd4f2283e218",
+      "version": "1.00"
+    },
+    "NPXX51369": {
+      "app_type": "game",
+      "name": "Pinball Wizard",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "191430656",
+      "source_md5": "97ba6514f3d2ec05e7e9ad0a65a5f0a9",
+      "version": "1.00"
+    },
+    "NPXX51373": {
+      "app_type": "game",
+      "name": "Strike Elite",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "605224960",
+      "source_md5": "3de36ba2c4eccdd76c257ed28a52e997",
+      "version": "1.00"
+    },
+    "NPXX51374": {
+      "app_type": "game",
+      "name": "★ FLAPPY BIRD  ★ By TER152 ★",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "80084992",
+      "source_md5": "aa628260c9e845d329a23584cc5fbb3b",
+      "version": "1.00"
+    },
+    "NPXX51385": {
+      "app_type": "emulator",
+      "name": "PS4-GBEmu",
+      "platform_marker": "5.05, 7.5x",
+      "release": "2024-05-10",
+      "size": "66519040",
+      "source_md5": "daee4b5f4be8e3d0ca9cebb7da8ba424",
+      "version": "1.01"
+    },
+    "NPXX51522": {
+      "app_type": "utility",
+      "name": "★ Pokemon ★ By TER152 ★",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "325648384",
+      "source_md5": "89f677d4aaae4a628f9e848da82ea8a0",
+      "version": "1.00"
+    },
+    "NPXX52599": {
+      "app_type": "game",
+      "name": "Greedy Gutz Gary",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "90505216",
+      "source_md5": "ad85f86ced42652f6c167161df8c4cf6",
+      "version": "1.00"
+    },
+    "NPXX88888": {
+      "app_type": "game",
+      "name": "Block Buster",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "89325568",
+      "source_md5": "f63e1b73ac8316a1bc139ed0b3b4e4c9",
+      "version": "1.00"
+    },
+    "NTXS10053": {
+      "app_type": "homebrew",
+      "name": "Scratch Everywhere!",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2026-01-11",
+      "size": "71696384",
+      "source_md5": "6133d152d4be1d44175667671933981c",
+      "version": "1.30"
+    },
+    "OPEN00001": {
+      "app_type": "hb game",
+      "name": "OpenTyrian @ cpasjuste",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "19791872",
+      "source_md5": "7aeaeb69aeecb44aaf66f2f7ca476ec4",
+      "version": "1.01"
+    },
+    "OVBD00001": {
+      "app_type": "hb game",
+      "name": "Sonic Time Twisted",
+      "platform_marker": "6.72+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "165871616",
+      "source_md5": "e8954c7e7d716c457193b7783514632a",
+      "version": "1.1.2.1"
+    },
+    "PCMN99999": {
+      "app_type": "game",
+      "name": "pacman",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "67764224",
+      "source_md5": "ce1fdb4d83c4ec0bfbbf6baad3d86171",
+      "version": "1.00"
+    },
+    "PCSX00002": {
+      "app_type": "emulator",
+      "name": "PCSX-R (Playstation)",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "6815744",
+      "source_md5": "2e56193eb633a9159ce86478aec054bf",
+      "version": "1.00"
+    },
+    "PFBN00001": {
+      "app_type": "emulator",
+      "name": "Portable Final Burn Neo",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "123666432",
+      "source_md5": "99ad995ad78e6e421eafb9b4b6dd251a",
+      "version": "6.7"
+    },
+    "PGEN00001": {
+      "app_type": "emulator",
+      "name": "pGEN - Portable Genesis Plus GX",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "48365568",
+      "source_md5": "dcb10e1a6a9906a02fa401ad90ff465d",
+      "version": "6.7"
+    },
+    "PKGI00001": {
+      "app_type": "utility",
+      "name": "PKGi",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "3407872",
+      "source_md5": "2d77f943286b3940cbdfc95b23e60f1a",
+      "version": "1.00"
+    },
+    "PKGI13337": {
+      "app_type": "utility",
+      "name": "FPKGi",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2025-05-07",
+      "size": "85458944",
+      "source_md5": null,
+      "version": "1.10.0"
+    },
+    "PNES00001": {
+      "app_type": "emulator",
+      "name": "pNES - Portable Nestopia",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "41287680",
+      "source_md5": "b0037d22dc5da7c90d3fee285191e13c",
+      "version": "6.7"
+    },
+    "PNES00002": {
+      "app_type": "emulator",
+      "name": "PS4NES",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "7405568",
+      "source_md5": "7bbc12c561229acaec2544de1a0616f5",
+      "version": "1.01"
+    },
+    "PONG00000": {
+      "app_type": "game",
+      "name": "Pong",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "70254592",
+      "source_md5": "ad07429e871a972df792766324becd54",
+      "version": "1.00"
+    },
+    "PPPP00002": {
+      "app_type": "emulator",
+      "name": "Yabause (Saturn)",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "8388608",
+      "source_md5": "988281b24cd6d42cbc49077b63d3588a",
+      "version": "1.00"
+    },
+    "PSNE00001": {
+      "app_type": "emulator",
+      "name": "pSNES - Portable Snes9x",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "42598400",
+      "source_md5": "575f156d816d3c440af2aafc82da9520",
+      "version": "6.7"
+    },
+    "PSNE99999": {
+      "app_type": "utility",
+      "name": "PSN-Enabler (Troll)",
+      "platform_marker": "--",
+      "release": "2024-05-10",
+      "size": "93847552",
+      "source_md5": "6996159a251eb584cb5c8fec434351e9",
+      "version": "1.00"
+    },
+    "QUIG00001": {
+      "app_type": "game",
+      "name": "Quickz Game",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "18546688",
+      "source_md5": "6663d68f36e388f570fd05ba9e45ad1b",
+      "version": "1.00"
+    },
+    "QUIG00003": {
+      "app_type": "game",
+      "name": "Blue Boi | Quickz",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "12845056",
+      "source_md5": "ca88e9f226dddefbb1d3ef3a36b2ab7a",
+      "version": "1.00"
+    },
+    "RHZR00001": {
+      "app_type": "hb game",
+      "name": "Relic Hunters Zero",
+      "platform_marker": "6.72+",
+      "release": "2024-05-10",
+      "size": "71696384",
+      "source_md5": "0bd158bc86eb5228c1fa50743bd5b49c",
+      "version": "1.0.0"
+    },
+    "RMTC00001": {
+      "app_type": "utility",
+      "name": "ezRemote Client",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "52822016",
+      "source_md5": null,
+      "version": "2.08"
+    },
+    "SAAT29385": {
+      "app_type": "utility",
+      "name": "PS4 TOOLSET",
+      "platform_marker": "9.00, 11.00",
+      "release": "2024-06-19",
+      "size": "158793728",
+      "source_md5": "8f555eedd7c413e34e9d43d548324b19",
+      "version": "2.20"
+    },
+    "SCUS00000": {
+      "app_type": "hb game",
+      "name": "Friday Night Funkin'",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "179961856",
+      "source_md5": "73cb9734a7eb1cdf8f846b73c29981e0",
+      "version": "1.00"
+    },
+    "SFIN00000": {
+      "app_type": "utility",
+      "name": "Switchfin",
+      "platform_marker": "5.05+",
+      "release": "2025-06-18",
+      "size": "58458112",
+      "source_md5": null,
+      "version": "0.9.4"
+    },
+    "SILI00009": {
+      "app_type": "hb game",
+      "name": "Street Racer HB",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "25100288",
+      "source_md5": "8b4592e69cd073e6701adc9bfbe74332",
+      "version": "1.00"
+    },
+    "SKID02048": {
+      "app_type": "game",
+      "name": "2048 Game (PS4 Native)",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2025-11-26",
+      "size": "38273024",
+      "source_md5": "fdfdfb7d5b8c7f910e56065ee444dd16",
+      "version": "1.01"
+    },
+    "SLUS26912": {
+      "app_type": "game",
+      "name": "Neo Thunder",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "29622272",
+      "source_md5": "cd8a289e76d15d3751025a0cfea8b055",
+      "version": "1.00"
+    },
+    "SMBC00001": {
+      "app_type": "utility",
+      "name": "PS4 SMB Client",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "30998528",
+      "source_md5": "fb274f0098d579ace66bdd345eefbd5e",
+      "version": "1.10"
+    },
+    "SMSR00001": {
+      "app_type": "hb game",
+      "name": "Sonic SMS Remake",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "47972352",
+      "source_md5": "bf2e6c5bd442025337cf3140eef65a65",
+      "version": "1.9.2"
+    },
+    "SMSR00002": {
+      "app_type": "hb game",
+      "name": "Sonic SMS Remake 2",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "65863680",
+      "source_md5": "5401ad78c0f60503fd13d8277bc09927",
+      "version": "2.9.2"
+    },
+    "SNEK99999": {
+      "app_type": "game",
+      "name": "snake",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "72810496",
+      "source_md5": "9c238c467b4a7a2bafbb72eface16fc0",
+      "version": "1.00"
+    },
+    "SPAC30000": {
+      "app_type": "game",
+      "name": "Space Invaders",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "67698688",
+      "source_md5": "369d2122fc92927fe96969a6b4dfe6db",
+      "version": "1.00"
+    },
+    "SPLK00001": {
+      "app_type": "game",
+      "name": "Spelunky Classic HD",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "87883776",
+      "source_md5": "981cfb518448b14317a92bdde169d898",
+      "version": "1.00"
+    },
+    "SSNE10000": {
+      "app_type": "emulator",
+      "name": "Unofficial RetroArch",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "28835840",
+      "source_md5": "bea2a8703c1de2023f2a2d9786d23c96",
+      "version": "4.00"
+    },
+    "SSNE20000": {
+      "app_type": "emulator add-on",
+      "name": "RetroArch Core Installer",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "1452474368",
+      "source_md5": "050341cdbab0b49af2e4aa6175097bb8",
+      "version": "4.00"
+    },
+    "STRE00001": {
+      "app_type": "game",
+      "name": "Street Racing",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "18415616",
+      "source_md5": "23495c823c50151c11d7f33f7488bc11",
+      "version": "1.00"
+    },
+    "SYNC00001": {
+      "app_type": "game",
+      "name": "Sync Simple",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "14024704",
+      "source_md5": "7448c9834af9926cdf38a8d9d745b229",
+      "version": "1.00"
+    },
+    "TEFO11111": {
+      "app_type": "game",
+      "name": "The Enchanted Forest",
+      "platform_marker": "4.55+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "318504960",
+      "source_md5": "7caa6715ec34ad8a4b651a6f26c4f89b",
+      "version": "1.00"
+    },
+    "UDAT99998": {
+      "app_type": "utility",
+      "name": "NoBD Toolkit",
+      "platform_marker": "4.55+",
+      "release": "2024-12-02",
+      "size": "8781824",
+      "source_md5": "9ce91dc54837f165b84a40dd309115f0",
+      "version": "2.04"
+    },
+    "UDAT99999": {
+      "app_type": "utility",
+      "name": "ReSys - Hybrid Installer",
+      "platform_marker": "7.55, 9.00",
+      "release": "2024-05-10",
+      "size": "1153302528",
+      "source_md5": "16db86a9defc886c3ddbedaa1b1d1d79",
+      "version": "1.01"
+    },
+    "UNTI00001": {
+      "app_type": "game",
+      "name": "An Untitled Story",
+      "platform_marker": "5.05+, ps5_supported",
+      "release": "2024-05-10",
+      "size": "64487424",
+      "source_md5": "661ee7c50aeebe3119fc8524b6600c2e",
+      "version": "1.00"
+    },
+    "VTHX21368": {
+      "app_type": "utility",
+      "name": "Consolepedia 3D",
+      "platform_marker": "4.50+",
+      "release": "2024-05-10",
+      "size": "253886464",
+      "source_md5": "e396d750b943e30b47088b8ac68d227a",
+      "version": "1.32"
+    },
+    "WDVC00001": {
+      "app_type": "utility",
+      "name": "PS4 WebDAV Client",
+      "platform_marker": "4.55+",
+      "release": "2024-05-10",
+      "size": "36044800",
+      "source_md5": "46c4fa82537e6d71744d7b4b3f262011",
+      "version": "1.04"
+    },
+    "WILI00000": {
+      "app_type": "media",
+      "name": "wiliwili",
+      "platform_marker": "5.05+",
+      "release": "2025-12-07",
+      "size": "74711040",
+      "source_md5": "c7a84dc1a21a1de58dee92fce4f3df93",
+      "version": "1.6.0"
+    },
+    "XDPX20004": {
+      "app_type": "utility",
+      "name": "PS4 Tools",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "238485504",
+      "source_md5": "899136dbc339dd3f46ea81c2e615154d",
+      "version": "1.33"
+    },
+    "XDPX20006": {
+      "app_type": "utility",
+      "name": "PS4 PluginX",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "97189888",
+      "source_md5": "e126c99617bd84bb2ca71d959d40b2eb",
+      "version": "1.00"
+    },
+    "YTSB42069": {
+      "app_type": "utility",
+      "name": "Sponsorblock Installer",
+      "platform_marker": "5.05+",
+      "release": "2025-10-08",
+      "size": "6619136",
+      "source_md5": "8ae2d2e2f4957d895d47e0839e30a381",
+      "version": "1.0.1"
+    },
+    "ZZZZ00001": {
+      "app_type": "emulator",
+      "name": "Reicast Beta 2",
+      "platform_marker": "5.05",
+      "release": "2024-05-10",
+      "size": "34603008",
+      "source_md5": "63bfd0327be4659bb16f4120f5dc4b0c",
+      "version": "1.00"
+    },
+    "ZZZZ00002": {
+      "app_type": "emulator",
+      "name": "mGBA",
+      "platform_marker": "5.05+",
+      "release": "2024-05-10",
+      "size": "7798784",
+      "source_md5": "9feb615818513f9670fdd2fd86149527",
+      "version": "1.00"
+    }
+  },
+  "schema": 1,
+  "source_db_md5": "75d409a53e78d6f6556e93a491220c3f"
+}

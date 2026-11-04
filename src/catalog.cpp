@@ -528,6 +528,40 @@ bool parse_catalog(const std::string& json, std::vector<CatalogItem>& items, std
     }
 }
 
+bool validate_hb_store_catalog(const std::vector<CatalogItem>& items, std::string& error) {
+    error.clear();
+    if (items.empty()) {
+        error = "maintained HB-Store catalog must not be empty";
+        return false;
+    }
+    const std::string package_prefix = "https://api.pkg-zone.com/download.php?tid=";
+    const std::string cover_prefix = "https://api.pkg-zone.com/images/";
+    for (size_t i = 0; i < items.size(); ++i) {
+        const CatalogItem& item = items[i];
+        if (item.pkg_url != package_prefix + item.title_id) {
+            error = "maintained HB-Store package URL does not match title ID";
+            return false;
+        }
+        if (item.region != "HB-Store") {
+            error = "maintained HB-Store item has an invalid source marker";
+            return false;
+        }
+        if (item.cover_url != cover_prefix + item.title_id + "/cover.png") {
+            error = "maintained HB-Store cover URL does not match title ID";
+            return false;
+        }
+    }
+    return true;
+}
+
+bool validate_local_catalog(const std::vector<CatalogItem>& items, std::string& error) {
+    for (size_t i = 0; i < items.size(); ++i) {
+        if (items[i].region == "HB-Store") return validate_hb_store_catalog(items, error);
+    }
+    error.clear();
+    return true;
+}
+
 std::string canonical_package_filename(const CatalogItem& item) {
     const std::string name = sanitize_component(item.name, 120, "Package");
     return item.title_id + "_v" + hex_component(item.version) + "_" + name + ".pkg";

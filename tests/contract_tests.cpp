@@ -185,6 +185,59 @@ void test_url_policy() {
            "HTTP to HTTPS redirect is accepted");
 }
 
+void test_hb_store_catalog_policy() {
+    const std::string valid =
+        "{\"DATA\":{\"https://api.pkg-zone.com/download.php?tid=TEST00001\":{"
+        "\"title_id\":\"TEST00001\",\"region\":\"HB-Store\","
+        "\"name\":\"Test Homebrew\",\"version\":\"1.00\",\"size\":\"4096\","
+        "\"cover_url\":\"https://api.pkg-zone.com/images/TEST00001/cover.png\"}}}";
+    std::vector<fpkgi::CatalogItem> items;
+    std::string error;
+    expect(fpkgi::parse_catalog(valid, items, error) &&
+               fpkgi::validate_hb_store_catalog(items, error),
+           "canonical nonempty HB-Store catalog is accepted");
+
+    std::vector<fpkgi::CatalogItem> empty;
+    error.clear();
+    expect(!fpkgi::validate_hb_store_catalog(empty, error),
+           "empty maintained HB-Store catalog is rejected");
+    error.clear();
+    expect(fpkgi::validate_local_catalog(empty, error),
+           "empty owner-supplied local catalog remains valid");
+    std::vector<fpkgi::CatalogItem> owner = items;
+    if (!owner.empty()) {
+        owner[0].pkg_url = "https://owner.example/package.pkg";
+        owner[0].region = "ALL";
+        owner[0].cover_url.clear();
+    }
+    error.clear();
+    expect(fpkgi::validate_local_catalog(owner, error),
+           "owner-supplied local catalog remains valid");
+    error.clear();
+    expect(fpkgi::validate_local_catalog(items, error),
+           "local HB-Store catalog receives source-specific validation");
+    if (!items.empty()) {
+        const fpkgi::CatalogItem original = items[0];
+        items[0].pkg_url = "https://example.test/package.pkg";
+        error.clear();
+        expect(!fpkgi::validate_hb_store_catalog(items, error),
+               "maintained package host and path are pinned");
+        error.clear();
+        expect(!fpkgi::validate_local_catalog(items, error),
+               "local HB-Store marker cannot bypass source-specific validation");
+        items[0] = original;
+        items[0].region = "ALL";
+        error.clear();
+        expect(!fpkgi::validate_hb_store_catalog(items, error),
+               "maintained catalog source marker is required");
+        items[0] = original;
+        items[0].cover_url = "https://api.pkg-zone.com/images/OTHER0001/cover.png";
+        error.clear();
+        expect(!fpkgi::validate_hb_store_catalog(items, error),
+               "maintained cover identity is pinned");
+    }
+}
+
 void test_canonical_filename() {
     fpkgi::CatalogItem item;
     item.title_id = "FPKG00001";
@@ -299,6 +352,7 @@ void test_package_verification() {
 
 int main() {
     test_catalog_contract();
+    test_hb_store_catalog_policy();
     test_url_policy();
     test_canonical_filename();
     test_pem_bundle();

@@ -23,6 +23,8 @@ struct CatalogItem {
 };
 
 bool parse_catalog(const std::string& json, std::vector<CatalogItem>& items, std::string& error);
+bool validate_hb_store_catalog(const std::vector<CatalogItem>& items, std::string& error);
+bool validate_local_catalog(const std::vector<CatalogItem>& items, std::string& error);
 bool validate_http_url(const std::string& url, std::string& error);
 bool resolve_redirect_url(const std::string& current_url, const std::string& location,
                           std::string& resolved_url, std::string& error);

@@ -1,0 +1,82 @@
+name: Sync permitted HB-Store catalog
+
+on:
+  workflow_dispatch:
+    inputs:
+      reprobe_all:
+        description: Ignore published probe state and revalidate every selected package
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hb-store-catalog-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'Unrealisedd/FPKGi-OpenOrbis'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test adapter contracts
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Synchronize permitted PS4 homebrew metadata
+        run: |
+          reprobe=()
+          if [ "${{ inputs.reprobe_all }}" = "true" ]; then
+            reprobe=(--reprobe-all)
+          fi
+          for attempt in 1 2 3; do
+            status=0
+            timeout --signal=TERM --kill-after=10s 25m \
+              python3 scripts/sync_hb_store.py "${reprobe[@]}" || status=$?
+            if [ "$status" -eq 0 ]; then
+              exit 0
+            fi
+            if [ "$status" -eq 124 ]; then
+              echo "Sync attempt reached its 25-minute deadline"
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              exit "$status"
+            fi
+            echo "Transient sync failure; retaining validated work cache for retry"
+            sleep 30
+          done
+
+      - name: Validate generated catalog and state
+        run: |
+          python3 scripts/validate_catalog.py catalog/catalog.json
+          python3 scripts/sync_hb_store.py --verify-output
+
+      - name: Commit changed catalog snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- catalog/catalog.json catalog/hb_store_state.json; then
+            echo "HB-Store snapshot is unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/catalog.json catalog/hb_store_state.json
+          git commit -m "catalog: sync permitted HB-Store snapshot"
+          git push origin HEAD:main

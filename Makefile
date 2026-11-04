@@ -1,6 +1,6 @@
 # FPKGi Native - OpenOrbis PS4 package build
 TITLE       := FPKGi Native
-VERSION     := 1.02
+VERSION     := 1.03
 TITLE_ID    := FPKG00001
 CONTENT_ID  := IV0000-FPKG00001_00-FPKGINATIVE00001
 OUTPUT_PKG  := FPKGi-Native-v$(VERSION).pkg
@@ -47,11 +47,14 @@ HOST_TEST_SOURCES := tests/contract_tests.cpp src/catalog.cpp src/package_verify
 
 -include $(DEPS)
 
-.PHONY: all clean prepare validate host-tests
-all: validate $(OUTPUT_PKG)
+.PHONY: all clean prepare validate validate-maintained host-tests
+all: validate-maintained $(OUTPUT_PKG)
 
 validate:
 	python3 scripts/validate_catalog.py catalog/catalog.json
+
+validate-maintained: validate
+	python3 scripts/sync_hb_store.py --verify-output
 
 host-tests: $(HOST_TEST)
 	$(HOST_TEST)
@@ -107,7 +110,7 @@ sce_sys/param.sfo: Makefile
 	$(TOOLCHAIN)/bin/$(CDIR)/PkgTool.Core sfo_setentry $@ TITLE_ID --type Utf8 --maxsize 12 --value '$(TITLE_ID)'
 	$(TOOLCHAIN)/bin/$(CDIR)/PkgTool.Core sfo_setentry $@ VERSION --type Utf8 --maxsize 8 --value '$(VERSION)'
 
-pkg.gp4: prepare eboot.bin sce_sys/param.sfo $(PACKAGE_ASSETS)
+pkg.gp4: validate prepare eboot.bin sce_sys/param.sfo $(PACKAGE_ASSETS)
 	$(TOOLCHAIN)/bin/$(CDIR)/create-gp4 -out $@ --content-id=$(CONTENT_ID) --files "$(PACKAGE_FILES)"
 
 $(CONTENT_ID).pkg: pkg.gp4

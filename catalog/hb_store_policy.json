@@ -1,0 +1,51 @@
+{
+  "allowed_app_types": [
+    "emulator",
+    "emulator add-on",
+    "game",
+    "games",
+    "hb game",
+    "homebrew",
+    "utility"
+  ],
+  "allowed_title_ids": [
+    "WILI00000"
+  ],
+  "denied_title_ids": [
+    "APOL00004",
+    "AZIF00001",
+    "CUSB99997",
+    "DELT00001",
+    "FLTZ00001",
+    "FLTZ00003",
+    "FMSX00000",
+    "GBTX00000",
+    "LAPY10014",
+    "LAPY10020",
+    "LAPY10021",
+    "LAPY10022",
+    "LAPY10024",
+    "LAPY20001"
+  ],
+  "denied_title_prefixes": [
+    "CUSA",
+    "PCAS",
+    "PCJS",
+    "PCSA",
+    "PCSF",
+    "PCSG",
+    "PCKS",
+    "PCSB",
+    "PCSE",
+    "PCSH",
+    "PLAS",
+    "PLJM",
+    "PLJS",
+    "PLPM",
+    "PPSA"
+  ],
+  "denied_platform_markers": [
+    "ps5 supported",
+    "ps5_supported"
+  ]
+}

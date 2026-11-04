@@ -1,3 +1,1267 @@
 {
-  "DATA": {}
+  "DATA": {
+    "https://api.pkg-zone.com/download.php?tid=AZIF00003": {
+      "cover_url": "https://api.pkg-zone.com/images/AZIF00003/cover.png",
+      "min_fw": "5.05+",
+      "name": "Payload Guest",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "34865152",
+      "title_id": "AZIF00003",
+      "version": "0.98"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BALL00001": {
+      "cover_url": "https://api.pkg-zone.com/images/BALL00001/cover.png",
+      "name": "Ball Blaster",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "58064896",
+      "title_id": "BALL00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BBAR00505": {
+      "cover_url": "https://api.pkg-zone.com/images/BBAR00505/cover.png",
+      "name": "B&nder Bar",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "19333120",
+      "title_id": "BBAR00505",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BBFF12362": {
+      "cover_url": "https://api.pkg-zone.com/images/BBFF12362/cover.png",
+      "min_fw": "5.05+",
+      "name": "Kill'em All.",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "1423507456",
+      "title_id": "BBFF12362",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BORC00007": {
+      "cover_url": "https://api.pkg-zone.com/images/BORC00007/cover.png",
+      "name": "Crisis evil 2",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "103481344",
+      "title_id": "BORC00007",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BORC00014": {
+      "cover_url": "https://api.pkg-zone.com/images/BORC00014/cover.png",
+      "name": "Street Fighter Beats Of Rage Remix 2",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "99942400",
+      "title_id": "BORC00014",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BORC00018": {
+      "cover_url": "https://api.pkg-zone.com/images/BORC00018/cover.png",
+      "name": "Golden Axe Curse Of The Death Adder",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "58327040",
+      "title_id": "BORC00018",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BORC00024": {
+      "cover_url": "https://api.pkg-zone.com/images/BORC00024/cover.png",
+      "name": "Mega Man War Of the Past",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "106496000",
+      "title_id": "BORC00024",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BORC00078": {
+      "cover_url": "https://api.pkg-zone.com/images/BORC00078/cover.png",
+      "name": "Batman Gotham Knights",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "82116608",
+      "title_id": "BORC00078",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BORP09801": {
+      "cover_url": "https://api.pkg-zone.com/images/BORP09801/cover.png",
+      "name": "Mortal Kombat Konquest",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "193396736",
+      "title_id": "BORP09801",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BORR00007": {
+      "cover_url": "https://api.pkg-zone.com/images/BORR00007/cover.png",
+      "name": "Cadillacs and Dinosaurs",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "65339392",
+      "title_id": "BORR00007",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BORR00044": {
+      "cover_url": "https://api.pkg-zone.com/images/BORR00044/cover.png",
+      "name": "Night Slashers X",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "51183616",
+      "title_id": "BORR00044",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00009": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00009/cover.png",
+      "min_fw": "5.05+",
+      "name": "Tiny PS4 Shell (Telnet Shell)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "title_id": "BREW00009",
+      "version": "0.0.1"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00080": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00080/cover.png",
+      "min_fw": "5.05+",
+      "name": "OpenOrbis Audio Sample",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "30474240",
+      "title_id": "BREW00080",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00081": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00081/cover.png",
+      "min_fw": "5.05+",
+      "name": "OpenOrbis Font Sample",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "title_id": "BREW00081",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00082": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00082/cover.png",
+      "min_fw": "5.05+",
+      "name": "OpenOrbis Graphics Sample",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "title_id": "BREW00082",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00084": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00084/cover.png",
+      "min_fw": "5.05+",
+      "name": "OpenOrbis Input Sample",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "title_id": "BREW00084",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00086": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00086/cover.png",
+      "min_fw": "5.05+",
+      "name": "OpenOrbis PNG Sample",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "title_id": "BREW00086",
+      "version": "1.02"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00088": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00088/cover.png",
+      "min_fw": "5.05+",
+      "name": "OpenOrbis System Sample",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "title_id": "BREW00088",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00090": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00090/cover.png",
+      "min_fw": "5.05+",
+      "name": "OpenOrbis SDL Sample",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "title_id": "BREW00090",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW00179": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00179/cover.png",
+      "name": "LogMeIn Hamachi (UNOFFICIAL)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "7798784",
+      "title_id": "BREW00179",
+      "version": "0.2.3"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW34965": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW34965/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 P-8 / Pico8",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "7208960",
+      "title_id": "BREW34965",
+      "version": "0.10"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW69420": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW69420/cover.png",
+      "min_fw": "5.05",
+      "name": "Brew",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "2752512",
+      "title_id": "BREW69420",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=BREW91909": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW91909/cover.png",
+      "min_fw": "5.05+",
+      "name": "Is it, or isn't?",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "15597568",
+      "title_id": "BREW91909",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CDRR00001": {
+      "cover_url": "https://api.pkg-zone.com/images/CDRR00001/cover.png",
+      "name": "Chip and Dale: Remastered",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "100466688",
+      "title_id": "CDRR00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CHIP80020": {
+      "cover_url": "https://api.pkg-zone.com/images/CHIP80020/cover.png",
+      "min_fw": "7.50+, 9.00",
+      "name": "Chip 8",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "7012352",
+      "title_id": "CHIP80020",
+      "version": "1.04"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CHTM00777": {
+      "cover_url": "https://api.pkg-zone.com/images/CHTM00777/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 Cheats Manager",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "19202048",
+      "title_id": "CHTM00777",
+      "version": "1.2.2"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CREP00001": {
+      "cover_url": "https://api.pkg-zone.com/images/CREP00001/cover.png",
+      "name": "CreeperDiver",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "19070976",
+      "title_id": "CREP00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CUSB00000": {
+      "cover_url": "https://api.pkg-zone.com/images/CUSB00000/cover.png",
+      "min_fw": "5.05+",
+      "name": "RetroArch NES (PS2)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "67895296",
+      "title_id": "CUSB00000",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CUSB00001": {
+      "cover_url": "https://api.pkg-zone.com/images/CUSB00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "RetroArch 2048 (PS2)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "68681728",
+      "title_id": "CUSB00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CUSB00002": {
+      "cover_url": "https://api.pkg-zone.com/images/CUSB00002/cover.png",
+      "min_fw": "5.05+",
+      "name": "Emu Mégadrive/Genesis (PS2)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "26935296",
+      "title_id": "CUSB00002",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CUSB00005": {
+      "cover_url": "https://api.pkg-zone.com/images/CUSB00005/cover.png",
+      "min_fw": "5.05",
+      "name": "Emu Game Boy Advance (PS2)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "23855104",
+      "title_id": "CUSB00005",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CUSB99999": {
+      "cover_url": "https://api.pkg-zone.com/images/CUSB99999/cover.png",
+      "min_fw": "5.05+",
+      "name": "RetroArch QuickNES (PS2)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "26345472",
+      "title_id": "CUSB99999",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CUSC00000": {
+      "cover_url": "https://api.pkg-zone.com/images/CUSC00000/cover.png",
+      "min_fw": "5.05+",
+      "name": "Emu Master System (PSP)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "124583936",
+      "title_id": "CUSC00000",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=FTPC00001": {
+      "cover_url": "https://api.pkg-zone.com/images/FTPC00001/cover.png",
+      "min_fw": "4.55+",
+      "name": "PS4 FTP Client",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "30801920",
+      "title_id": "FTPC00001",
+      "version": "1.0.8"
+    },
+    "https://api.pkg-zone.com/download.php?tid=GMSP00006": {
+      "cover_url": "https://api.pkg-zone.com/images/GMSP00006/cover.png",
+      "name": "SHEPHARD",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "18022400",
+      "title_id": "GMSP00006",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=ITEM00001": {
+      "cover_url": "https://api.pkg-zone.com/images/ITEM00001/cover.png",
+      "min_fw": "5.05+ != 6.72",
+      "name": "Itemzflow Game Manager",
+      "region": "HB-Store",
+      "release": "2025-06-22",
+      "size": "27131904",
+      "title_id": "ITEM00001",
+      "version": "1.08"
+    },
+    "https://api.pkg-zone.com/download.php?tid=KRGR00001": {
+      "cover_url": "https://api.pkg-zone.com/images/KRGR00001/cover.png",
+      "name": "Hamer!! (PORT)",
+      "region": "HB-Store",
+      "release": "2025-11-26",
+      "size": "235667456",
+      "title_id": "KRGR00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10004": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10004/cover.png",
+      "min_fw": "5.05+",
+      "name": "Overcome",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "87883776",
+      "title_id": "LAPY10004",
+      "version": "1.03"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10005": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10005/cover.png",
+      "min_fw": "4.55+",
+      "name": "Overcome Save the Girl",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "100728832",
+      "title_id": "LAPY10005",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10007": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10007/cover.png",
+      "min_fw": "4.55+",
+      "name": "Shoot Test",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "86507520",
+      "title_id": "LAPY10007",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10008": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10008/cover.png",
+      "min_fw": "4.55+",
+      "name": "Duck Hunt Remake",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "98369536",
+      "title_id": "LAPY10008",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10009": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10009/cover.png",
+      "min_fw": "4.55+",
+      "name": "Wild Gunman Remake",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "112525312",
+      "title_id": "LAPY10009",
+      "version": "1.02"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10010": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10010/cover.png",
+      "min_fw": "4.55+",
+      "name": "PS Scene The Quiz Game",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "261685248",
+      "title_id": "LAPY10010",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10012": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10012/cover.png",
+      "name": "Lapy Games Collection",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "192282624",
+      "title_id": "LAPY10012",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10015": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10015/cover.png",
+      "min_fw": "4.55+",
+      "name": "Super Console Wars",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "183894016",
+      "title_id": "LAPY10015",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10016": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10016/cover.png",
+      "min_fw": "4.55+",
+      "name": "Nanospeed The Game",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "102825984",
+      "title_id": "LAPY10016",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10017": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10017/cover.png",
+      "name": "Brain Splitter",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "103415808",
+      "title_id": "LAPY10017",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10018": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10018/cover.png",
+      "name": "Ghost of Tsushima Mini Games",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "91488256",
+      "title_id": "LAPY10018",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10023": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10023/cover.png",
+      "min_fw": "4.55+",
+      "name": "I Know that Song",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "226033664",
+      "title_id": "LAPY10023",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY10025": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY10025/cover.png",
+      "name": "Senua's Saga Hellblade II",
+      "region": "HB-Store",
+      "release": "2024-11-26",
+      "size": "60358656",
+      "title_id": "LAPY10025",
+      "version": "1.04"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY20002": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY20002/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 Player",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "52428800",
+      "title_id": "LAPY20002",
+      "version": "1.08"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY20004": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY20004/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 App Lock",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "53936128",
+      "title_id": "LAPY20004",
+      "version": "1.07"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY20006": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY20006/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 Temperature",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "50331648",
+      "title_id": "LAPY20006",
+      "version": "1.07"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY20007": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY20007/cover.png",
+      "min_fw": "4.55+",
+      "name": "Icon Mask",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "74055680",
+      "title_id": "LAPY20007",
+      "version": "1.16"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY20009": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY20009/cover.png",
+      "min_fw": "4.55+",
+      "name": "PS4-Xplorer 2.0",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "63766528",
+      "title_id": "LAPY20009",
+      "version": "2.07"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY20010": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY20010/cover.png",
+      "min_fw": "5.05",
+      "name": "PS4 Kernel BTTF",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "52822016",
+      "title_id": "LAPY20010",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY20014": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY20014/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 Player 3D",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "57475072",
+      "title_id": "LAPY20014",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=LAPY20015": {
+      "cover_url": "https://api.pkg-zone.com/images/LAPY20015/cover.png",
+      "min_fw": "5.05+",
+      "name": "Avatar Changer",
+      "region": "HB-Store",
+      "release": "2025-02-24",
+      "size": "54788096",
+      "title_id": "LAPY20015",
+      "version": "1.02"
+    },
+    "https://api.pkg-zone.com/download.php?tid=MAND00001": {
+      "cover_url": "https://api.pkg-zone.com/images/MAND00001/cover.png",
+      "name": "Mandelbrot Zoom",
+      "region": "HB-Store",
+      "release": "2026-08-16",
+      "size": "7143424",
+      "title_id": "MAND00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=MARK00095": {
+      "cover_url": "https://api.pkg-zone.com/images/MARK00095/cover.png",
+      "name": "Resident Evil CODE: Ps4",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "27066368",
+      "title_id": "MARK00095",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=MEDN00001": {
+      "cover_url": "https://api.pkg-zone.com/images/MEDN00001/cover.png",
+      "min_fw": "5.05",
+      "name": "Mednafen",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "33554432",
+      "title_id": "MEDN00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=MRPH00001": {
+      "cover_url": "https://api.pkg-zone.com/images/MRPH00001/cover.png",
+      "min_fw": "5.05",
+      "name": "ps4Gearsystem",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6619136",
+      "title_id": "MRPH00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXS29129": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXS29129/cover.png",
+      "min_fw": "5.05+",
+      "name": "A GameMaker: Studio Game",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "32571392",
+      "title_id": "NPXS29129",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX10001": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX10001/cover.png",
+      "min_fw": "4.55+",
+      "name": "El Pollo de Lapy",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "65208320",
+      "title_id": "NPXX10001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX10002": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX10002/cover.png",
+      "min_fw": "4.55+",
+      "name": "Save The Scene",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "108855296",
+      "title_id": "NPXX10002",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX10003": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX10003/cover.png",
+      "min_fw": "5.05+",
+      "name": "El Pollo 2.0",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "90832896",
+      "title_id": "NPXX10003",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX10129": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX10129/cover.png",
+      "name": "Snake Ball v0.3",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "93913088",
+      "title_id": "NPXX10129",
+      "version": "0.3"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX33362": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX33362/cover.png",
+      "min_fw": "4.55, 5.05",
+      "name": "ORBISMAN (BETA)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "99352576",
+      "title_id": "NPXX33362",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX33382": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX33382/cover.png",
+      "min_fw": "5.05",
+      "name": "File Manager for PS4™",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "74776576",
+      "title_id": "NPXX33382",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX33392": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX33392/cover.png",
+      "min_fw": "5.05",
+      "name": "LibOrbis PKG Loader Sample (Tetris)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "11272192",
+      "title_id": "NPXX33392",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX50003": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX50003/cover.png",
+      "name": "tank game",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "118620160",
+      "title_id": "NPXX50003",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX50004": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX50004/cover.png",
+      "name": "SpaceShooter",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "84475904",
+      "title_id": "NPXX50004",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51351": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51351/cover.png",
+      "min_fw": "4.55+",
+      "name": "Soilder Mayham v1",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "164298752",
+      "title_id": "NPXX51351",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51363": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51363/cover.png",
+      "min_fw": "5.05",
+      "name": "MediaPlayer PS4",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "116129792",
+      "title_id": "NPXX51363",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51364": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51364/cover.png",
+      "name": "PS4 Controller Homebrew",
+      "region": "HB-Store",
+      "release": "2024-06-07",
+      "size": "115212288",
+      "title_id": "NPXX51364",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51365": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51365/cover.png",
+      "name": "Roll The Ball for PS4",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "144572416",
+      "title_id": "NPXX51365",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51369": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51369/cover.png",
+      "name": "Pinball Wizard",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "191430656",
+      "title_id": "NPXX51369",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51373": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51373/cover.png",
+      "min_fw": "4.55+",
+      "name": "Strike Elite",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "605224960",
+      "title_id": "NPXX51373",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51374": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51374/cover.png",
+      "min_fw": "4.55+",
+      "name": "★ FLAPPY BIRD  ★ By TER152 ★",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "80084992",
+      "title_id": "NPXX51374",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51385": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51385/cover.png",
+      "min_fw": "5.05, 7.5x",
+      "name": "PS4-GBEmu",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "66519040",
+      "title_id": "NPXX51385",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX51522": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX51522/cover.png",
+      "min_fw": "4.55+",
+      "name": "★ Pokemon ★ By TER152 ★",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "325648384",
+      "title_id": "NPXX51522",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX52599": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX52599/cover.png",
+      "name": "Greedy Gutz Gary",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "90505216",
+      "title_id": "NPXX52599",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NPXX88888": {
+      "cover_url": "https://api.pkg-zone.com/images/NPXX88888/cover.png",
+      "min_fw": "4.55+",
+      "name": "Block Buster",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "89325568",
+      "title_id": "NPXX88888",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=NTXS10053": {
+      "cover_url": "https://api.pkg-zone.com/images/NTXS10053/cover.png",
+      "name": "Scratch Everywhere!",
+      "region": "HB-Store",
+      "release": "2026-01-11",
+      "size": "71696384",
+      "title_id": "NTXS10053",
+      "version": "1.30"
+    },
+    "https://api.pkg-zone.com/download.php?tid=OPEN00001": {
+      "cover_url": "https://api.pkg-zone.com/images/OPEN00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "OpenTyrian @ cpasjuste",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "19791872",
+      "title_id": "OPEN00001",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=OVBD00001": {
+      "cover_url": "https://api.pkg-zone.com/images/OVBD00001/cover.png",
+      "name": "Sonic Time Twisted",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "165871616",
+      "title_id": "OVBD00001",
+      "version": "1.1.2.1"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PCMN99999": {
+      "cover_url": "https://api.pkg-zone.com/images/PCMN99999/cover.png",
+      "name": "pacman",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "67764224",
+      "title_id": "PCMN99999",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PCSX00002": {
+      "cover_url": "https://api.pkg-zone.com/images/PCSX00002/cover.png",
+      "min_fw": "5.05",
+      "name": "PCSX-R (Playstation)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "6815744",
+      "title_id": "PCSX00002",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PFBN00001": {
+      "cover_url": "https://api.pkg-zone.com/images/PFBN00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "Portable Final Burn Neo",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "123666432",
+      "title_id": "PFBN00001",
+      "version": "6.7"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PGEN00001": {
+      "cover_url": "https://api.pkg-zone.com/images/PGEN00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "pGEN - Portable Genesis Plus GX",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "48365568",
+      "title_id": "PGEN00001",
+      "version": "6.7"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PKGI00001": {
+      "cover_url": "https://api.pkg-zone.com/images/PKGI00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "PKGi",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "3407872",
+      "title_id": "PKGI00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PKGI13337": {
+      "cover_url": "https://api.pkg-zone.com/images/PKGI13337/cover.png",
+      "name": "FPKGi",
+      "region": "HB-Store",
+      "release": "2025-05-07",
+      "size": "85458944",
+      "title_id": "PKGI13337",
+      "version": "1.10.0"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PNES00001": {
+      "cover_url": "https://api.pkg-zone.com/images/PNES00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "pNES - Portable Nestopia",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "41287680",
+      "title_id": "PNES00001",
+      "version": "6.7"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PNES00002": {
+      "cover_url": "https://api.pkg-zone.com/images/PNES00002/cover.png",
+      "min_fw": "5.05",
+      "name": "PS4NES",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "7405568",
+      "title_id": "PNES00002",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PONG00000": {
+      "cover_url": "https://api.pkg-zone.com/images/PONG00000/cover.png",
+      "name": "Pong",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "70254592",
+      "title_id": "PONG00000",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PPPP00002": {
+      "cover_url": "https://api.pkg-zone.com/images/PPPP00002/cover.png",
+      "min_fw": "5.05",
+      "name": "Yabause (Saturn)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "8388608",
+      "title_id": "PPPP00002",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PSNE00001": {
+      "cover_url": "https://api.pkg-zone.com/images/PSNE00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "pSNES - Portable Snes9x",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "42598400",
+      "title_id": "PSNE00001",
+      "version": "6.7"
+    },
+    "https://api.pkg-zone.com/download.php?tid=PSNE99999": {
+      "cover_url": "https://api.pkg-zone.com/images/PSNE99999/cover.png",
+      "min_fw": "--",
+      "name": "PSN-Enabler (Troll)",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "93847552",
+      "title_id": "PSNE99999",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=QUIG00001": {
+      "cover_url": "https://api.pkg-zone.com/images/QUIG00001/cover.png",
+      "name": "Quickz Game",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "18546688",
+      "title_id": "QUIG00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=QUIG00003": {
+      "cover_url": "https://api.pkg-zone.com/images/QUIG00003/cover.png",
+      "name": "Blue Boi | Quickz",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "12845056",
+      "title_id": "QUIG00003",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=RHZR00001": {
+      "cover_url": "https://api.pkg-zone.com/images/RHZR00001/cover.png",
+      "min_fw": "6.72+",
+      "name": "Relic Hunters Zero",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "71696384",
+      "title_id": "RHZR00001",
+      "version": "1.0.0"
+    },
+    "https://api.pkg-zone.com/download.php?tid=RMTC00001": {
+      "cover_url": "https://api.pkg-zone.com/images/RMTC00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "ezRemote Client",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "52822016",
+      "title_id": "RMTC00001",
+      "version": "2.08"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SAAT29385": {
+      "cover_url": "https://api.pkg-zone.com/images/SAAT29385/cover.png",
+      "min_fw": "9.00, 11.00",
+      "name": "PS4 TOOLSET",
+      "region": "HB-Store",
+      "release": "2024-06-19",
+      "size": "158793728",
+      "title_id": "SAAT29385",
+      "version": "2.20"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SCUS00000": {
+      "cover_url": "https://api.pkg-zone.com/images/SCUS00000/cover.png",
+      "name": "Friday Night Funkin'",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "179961856",
+      "title_id": "SCUS00000",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SFIN00000": {
+      "cover_url": "https://api.pkg-zone.com/images/SFIN00000/cover.png",
+      "min_fw": "5.05+",
+      "name": "Switchfin",
+      "region": "HB-Store",
+      "release": "2025-06-18",
+      "size": "58458112",
+      "title_id": "SFIN00000",
+      "version": "0.9.4"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SILI00009": {
+      "cover_url": "https://api.pkg-zone.com/images/SILI00009/cover.png",
+      "name": "Street Racer HB",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "25100288",
+      "title_id": "SILI00009",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SKID02048": {
+      "cover_url": "https://api.pkg-zone.com/images/SKID02048/cover.png",
+      "name": "2048 Game (PS4 Native)",
+      "region": "HB-Store",
+      "release": "2025-11-26",
+      "size": "38273024",
+      "title_id": "SKID02048",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SLUS26912": {
+      "cover_url": "https://api.pkg-zone.com/images/SLUS26912/cover.png",
+      "min_fw": "4.55+",
+      "name": "Neo Thunder",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "29622272",
+      "title_id": "SLUS26912",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SMBC00001": {
+      "cover_url": "https://api.pkg-zone.com/images/SMBC00001/cover.png",
+      "min_fw": "4.55+",
+      "name": "PS4 SMB Client",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "30998528",
+      "title_id": "SMBC00001",
+      "version": "1.10"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SMSR00001": {
+      "cover_url": "https://api.pkg-zone.com/images/SMSR00001/cover.png",
+      "name": "Sonic SMS Remake",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "47972352",
+      "title_id": "SMSR00001",
+      "version": "1.9.2"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SMSR00002": {
+      "cover_url": "https://api.pkg-zone.com/images/SMSR00002/cover.png",
+      "name": "Sonic SMS Remake 2",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "65863680",
+      "title_id": "SMSR00002",
+      "version": "2.9.2"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SNEK99999": {
+      "cover_url": "https://api.pkg-zone.com/images/SNEK99999/cover.png",
+      "name": "snake",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "72810496",
+      "title_id": "SNEK99999",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SPAC30000": {
+      "cover_url": "https://api.pkg-zone.com/images/SPAC30000/cover.png",
+      "name": "Space Invaders",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "67698688",
+      "title_id": "SPAC30000",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SPLK00001": {
+      "cover_url": "https://api.pkg-zone.com/images/SPLK00001/cover.png",
+      "name": "Spelunky Classic HD",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "87883776",
+      "title_id": "SPLK00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SSNE10000": {
+      "cover_url": "https://api.pkg-zone.com/images/SSNE10000/cover.png",
+      "min_fw": "5.05+",
+      "name": "Unofficial RetroArch",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "28835840",
+      "title_id": "SSNE10000",
+      "version": "4.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SSNE20000": {
+      "cover_url": "https://api.pkg-zone.com/images/SSNE20000/cover.png",
+      "min_fw": "5.05+",
+      "name": "RetroArch Core Installer",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "1452474368",
+      "title_id": "SSNE20000",
+      "version": "4.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=STRE00001": {
+      "cover_url": "https://api.pkg-zone.com/images/STRE00001/cover.png",
+      "name": "Street Racing",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "18415616",
+      "title_id": "STRE00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=SYNC00001": {
+      "cover_url": "https://api.pkg-zone.com/images/SYNC00001/cover.png",
+      "name": "Sync Simple",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "14024704",
+      "title_id": "SYNC00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=TEFO11111": {
+      "cover_url": "https://api.pkg-zone.com/images/TEFO11111/cover.png",
+      "name": "The Enchanted Forest",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "318504960",
+      "title_id": "TEFO11111",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=UDAT99998": {
+      "cover_url": "https://api.pkg-zone.com/images/UDAT99998/cover.png",
+      "min_fw": "4.55+",
+      "name": "NoBD Toolkit",
+      "region": "HB-Store",
+      "release": "2024-12-02",
+      "size": "8781824",
+      "title_id": "UDAT99998",
+      "version": "2.04"
+    },
+    "https://api.pkg-zone.com/download.php?tid=UDAT99999": {
+      "cover_url": "https://api.pkg-zone.com/images/UDAT99999/cover.png",
+      "min_fw": "7.55, 9.00",
+      "name": "ReSys - Hybrid Installer",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "1153302528",
+      "title_id": "UDAT99999",
+      "version": "1.01"
+    },
+    "https://api.pkg-zone.com/download.php?tid=UNTI00001": {
+      "cover_url": "https://api.pkg-zone.com/images/UNTI00001/cover.png",
+      "name": "An Untitled Story",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "64487424",
+      "title_id": "UNTI00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=VTHX21368": {
+      "cover_url": "https://api.pkg-zone.com/images/VTHX21368/cover.png",
+      "min_fw": "4.50+",
+      "name": "Consolepedia 3D",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "253886464",
+      "title_id": "VTHX21368",
+      "version": "1.32"
+    },
+    "https://api.pkg-zone.com/download.php?tid=WDVC00001": {
+      "cover_url": "https://api.pkg-zone.com/images/WDVC00001/cover.png",
+      "min_fw": "4.55+",
+      "name": "PS4 WebDAV Client",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "36044800",
+      "title_id": "WDVC00001",
+      "version": "1.04"
+    },
+    "https://api.pkg-zone.com/download.php?tid=WILI00000": {
+      "cover_url": "https://api.pkg-zone.com/images/WILI00000/cover.png",
+      "min_fw": "5.05+",
+      "name": "wiliwili",
+      "region": "HB-Store",
+      "release": "2025-12-07",
+      "size": "74711040",
+      "title_id": "WILI00000",
+      "version": "1.6.0"
+    },
+    "https://api.pkg-zone.com/download.php?tid=XDPX20004": {
+      "cover_url": "https://api.pkg-zone.com/images/XDPX20004/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 Tools",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "238485504",
+      "title_id": "XDPX20004",
+      "version": "1.33"
+    },
+    "https://api.pkg-zone.com/download.php?tid=XDPX20006": {
+      "cover_url": "https://api.pkg-zone.com/images/XDPX20006/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 PluginX",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "97189888",
+      "title_id": "XDPX20006",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=YTSB42069": {
+      "cover_url": "https://api.pkg-zone.com/images/YTSB42069/cover.png",
+      "min_fw": "5.05+",
+      "name": "Sponsorblock Installer",
+      "region": "HB-Store",
+      "release": "2025-10-08",
+      "size": "6619136",
+      "title_id": "YTSB42069",
+      "version": "1.0.1"
+    },
+    "https://api.pkg-zone.com/download.php?tid=ZZZZ00001": {
+      "cover_url": "https://api.pkg-zone.com/images/ZZZZ00001/cover.png",
+      "min_fw": "5.05",
+      "name": "Reicast Beta 2",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "34603008",
+      "title_id": "ZZZZ00001",
+      "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=ZZZZ00002": {
+      "cover_url": "https://api.pkg-zone.com/images/ZZZZ00002/cover.png",
+      "min_fw": "5.05+",
+      "name": "mGBA",
+      "region": "HB-Store",
+      "release": "2024-05-10",
+      "size": "7798784",
+      "title_id": "ZZZZ00002",
+      "version": "1.00"
+    }
+  }
 }

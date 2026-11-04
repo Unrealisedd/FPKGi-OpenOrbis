@@ -26,18 +26,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run host contract tests and validate empty catalog
+      - name: Run host contracts and validate maintained catalog
         run: |
           make HOST_CXX=g++ host-tests
           printf '%s  %s\n' "$CA_BUNDLE_SHA256" assets/cacert.pem | sha256sum --check --strict
           python3 scripts/validate_catalog.py catalog/catalog.json
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          catalog = json.loads(Path("catalog/catalog.json").read_text(encoding="utf-8"))
-          if catalog != {"DATA": {}}:
-              raise SystemExit("bundled catalog must remain empty")
-          PY
+          python3 scripts/sync_hb_store.py --verify-output
 
       - name: Download and verify OpenOrbis v0.5.4
         run: |
@@ -81,28 +75,28 @@ jobs:
               export DEBIAN_FRONTEND=noninteractive
               apt-get update -qq
               apt-get install -y --no-install-recommends make libicu66 libssl1.1 ca-certificates python3
-              make FPKGi-Native-v1.02.pkg
-              /opt/openorbis/bin/linux/PkgTool.Core pkg_validate --verbose FPKGi-Native-v1.02.pkg
+              make FPKGi-Native-v1.03.pkg
+              /opt/openorbis/bin/linux/PkgTool.Core pkg_validate --verbose FPKGi-Native-v1.03.pkg
             ' 2>&1 | tee fpkgi-package.log
-          test -s FPKGi-Native-v1.02.pkg
-          sha256sum --binary FPKGi-Native-v1.02.pkg > FPKGi-Native-v1.02.pkg.sha256
-          sha256sum --check --strict FPKGi-Native-v1.02.pkg.sha256
+          test -s FPKGi-Native-v1.03.pkg
+          sha256sum --binary FPKGi-Native-v1.03.pkg > FPKGi-Native-v1.03.pkg.sha256
+          sha256sum --check --strict FPKGi-Native-v1.03.pkg.sha256
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: FPKGi-Native-v1.02-PS4
+          name: FPKGi-Native-v1.03-PS4
           path: |
             eboot.bin
-            FPKGi-Native-v1.02.pkg
-            FPKGi-Native-v1.02.pkg.sha256
+            FPKGi-Native-v1.03.pkg
+            FPKGi-Native-v1.03.pkg.sha256
           if-no-files-found: error
 
       - name: Upload diagnostics on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: FPKGi-Native-v1.02-build-diagnostics
+          name: FPKGi-Native-v1.03-build-diagnostics
           path: |
             fpkgi-compile.log
             fpkgi-package.log

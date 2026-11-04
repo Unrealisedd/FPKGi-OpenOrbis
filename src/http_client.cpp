@@ -27,7 +27,10 @@ int32_t fpkgiSslTerm(int32_t ssl_context) __asm__("sceSslTerm");
 namespace fpkgi {
 namespace {
 
-const char* kUserAgent = "FPKGi-Native/1.02 (OpenOrbis PS4 Homebrew)";
+const char* kUserAgent = "FPKGi-Native/1.03 (OpenOrbis PS4 Homebrew)";
+const char* kHbStoreUserAgent =
+    "StoreHAX/GL-0x14000000 FPKGi-Native/1.03 (OpenOrbis PS4 Homebrew)";
+const char kHbStorePrefix[] = "https://api.pkg-zone.com/";
 const char* kCaBundlePath = "/app0/assets/cacert.pem";
 const size_t kNetPoolSize = 64 * 1024;
 const size_t kSslPoolSize = 1024 * 1024;
@@ -138,9 +141,18 @@ bool header_value(const char* headers, size_t header_size, const char* name, std
     return false;
 }
 
+bool is_hb_store_origin(const std::string& url) {
+    return url.compare(0, sizeof(kHbStorePrefix) - 1, kHbStorePrefix) == 0;
+}
+
+const char* user_agent_for_url(const std::string& url) {
+    return is_hb_store_origin(url) ? kHbStoreUserAgent : kUserAgent;
+}
+
 bool open_get(int http_context, const std::string& url, RequestHandles& handles,
               int32_t& status, std::string& redirect, std::string& error) {
-    handles.tmpl = sceHttpCreateTemplate(http_context, kUserAgent, ORBIS_HTTP_VERSION_1_1, 1);
+    handles.tmpl = sceHttpCreateTemplate(http_context, user_agent_for_url(url),
+                                         ORBIS_HTTP_VERSION_1_1, 1);
     if (handles.tmpl < 0) {
         error = native_error("sceHttpCreateTemplate", handles.tmpl);
         return false;
@@ -212,6 +224,7 @@ bool open_get(int http_context, const std::string& url, RequestHandles& handles,
 bool open_final_get(int http_context, const std::string& initial_url, RequestHandles& handles,
                     int32_t& status, std::string& final_url, std::string& error) {
     if (!validate_http_url(initial_url, error)) return false;
+    const bool pin_hb_store_origin = is_hb_store_origin(initial_url);
     std::string url = initial_url;
     for (int redirects = 0; redirects <= kMaxRedirects; ++redirects) {
         std::string location;
@@ -230,6 +243,10 @@ bool open_final_get(int http_context, const std::string& initial_url, RequestHan
         }
         std::string next;
         if (!resolve_redirect_url(url, location, next, error)) return false;
+        if (pin_hb_store_origin && !is_hb_store_origin(next)) {
+            error = "HB-Store redirect left the authorized origin";
+            return false;
+        }
         url.swap(next);
     }
     error = "too many HTTP redirects";

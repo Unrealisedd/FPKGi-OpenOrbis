@@ -271,6 +271,11 @@ void refresh_catalog(SharedState* state) {
         set_status(state, "CATALOG INVALID - CURRENT LIST KEPT: " + error, false);
         return;
     }
+    if (!fpkgi::validate_hb_store_catalog(parsed, error)) {
+        boot_trace("CATALOG_POLICY_FAILED", error.c_str());
+        set_status(state, "CATALOG POLICY FAILED - CURRENT LIST KEPT: " + error, false);
+        return;
+    }
     boot_trace("CATALOG_PARSE_COMPLETE");
 
     boot_trace("CATALOG_SAVE_BEGIN");
@@ -449,7 +454,8 @@ void load_initial_catalog(SharedState& state) {
     std::string error;
     std::vector<CatalogItem> parsed;
     if (fpkgi::load_text_file(kCachedCatalog, kMaxCatalogBytes, json, error) &&
-        fpkgi::parse_catalog(json, parsed, error)) {
+        fpkgi::parse_catalog(json, parsed, error) &&
+        fpkgi::validate_local_catalog(parsed, error)) {
         state.items.swap(parsed);
         state.status = "CACHED CATALOG LOADED";
         return;
@@ -457,9 +463,10 @@ void load_initial_catalog(SharedState& state) {
     json.clear();
     parsed.clear();
     if (fpkgi::load_text_file(kBundledCatalog, kMaxCatalogBytes, json, error) &&
-        fpkgi::parse_catalog(json, parsed, error)) {
+        fpkgi::parse_catalog(json, parsed, error) &&
+        fpkgi::validate_local_catalog(parsed, error)) {
         state.items.swap(parsed);
-        state.status = "BUNDLED EMPTY CATALOG LOADED";
+        state.status = "BUNDLED CATALOG LOADED";
     } else {
         state.status = "NO VALID LOCAL CATALOG";
     }
@@ -557,7 +564,7 @@ void render(SDL_Renderer* renderer, SharedState& state, int selected) {
 int main(int, char**) {
     setvbuf(stdout, 0, _IONBF, 0);
     umask(0077);
-    boot_trace("ENTRY", "VERSION 1.02");
+    boot_trace("ENTRY", "VERSION 1.03");
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
         boot_trace("SDL_INIT_FAILED", SDL_GetError());
