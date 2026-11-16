@@ -180,6 +180,16 @@
       "title_id": "BREW00088",
       "version": "1.00"
     },
+    "https://api.pkg-zone.com/download.php?tid=BREW00089": {
+      "cover_url": "https://api.pkg-zone.com/images/BREW00089/cover.png",
+      "min_fw": "5.05+",
+      "name": "PS4 HDD Tools",
+      "region": "HB-Store",
+      "release": "2026-11-14",
+      "size": "6619136",
+      "title_id": "BREW00089",
+      "version": "1.3.2.5"
+    },
     "https://api.pkg-zone.com/download.php?tid=BREW00090": {
       "cover_url": "https://api.pkg-zone.com/images/BREW00090/cover.png",
       "min_fw": "5.05+",
@@ -214,10 +224,10 @@
       "min_fw": "5.05",
       "name": "Brew",
       "region": "HB-Store",
-      "release": "2024-05-10",
+      "release": "2026-11-14",
       "size": "2752512",
       "title_id": "BREW69420",
-      "version": "1.00"
+      "version": "initial"
     },
     "https://api.pkg-zone.com/download.php?tid=BREW91909": {
       "cover_url": "https://api.pkg-zone.com/images/BREW91909/cover.png",
@@ -228,6 +238,16 @@
       "size": "15597568",
       "title_id": "BREW91909",
       "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=CBFD00064": {
+      "cover_url": "https://api.pkg-zone.com/images/CBFD00064/cover.png",
+      "min_fw": "5.05+",
+      "name": "Conker's Bad Fur Day: Recompiled",
+      "region": "HB-Store",
+      "release": "2026-11-14",
+      "size": "124059648",
+      "title_id": "CBFD00064",
+      "version": "00.13"
     },
     "https://api.pkg-zone.com/download.php?tid=CDRR00001": {
       "cover_url": "https://api.pkg-zone.com/images/CDRR00001/cover.png",
@@ -360,10 +380,10 @@
       "cover_url": "https://api.pkg-zone.com/images/KRGR00001/cover.png",
       "name": "Hamer!! (PORT)",
       "region": "HB-Store",
-      "release": "2025-11-26",
+      "release": "2026-11-14",
       "size": "235667456",
       "title_id": "KRGR00001",
-      "version": "1.00"
+      "version": "release-1.0"
     },
     "https://api.pkg-zone.com/download.php?tid=LAPY10004": {
       "cover_url": "https://api.pkg-zone.com/images/LAPY10004/cover.png",
@@ -579,6 +599,16 @@
       "size": "7143424",
       "title_id": "MAND00001",
       "version": "1.00"
+    },
+    "https://api.pkg-zone.com/download.php?tid=MARC00001": {
+      "cover_url": "https://api.pkg-zone.com/images/MARC00001/cover.png",
+      "min_fw": "5.05+",
+      "name": "Hyper Neiva",
+      "region": "HB-Store",
+      "release": "2026-11-14",
+      "size": "176422912",
+      "title_id": "MARC00001",
+      "version": "3.72"
     },
     "https://api.pkg-zone.com/download.php?tid=MARK00095": {
       "cover_url": "https://api.pkg-zone.com/images/MARK00095/cover.png",
@@ -927,6 +957,16 @@
       "title_id": "PONG00000",
       "version": "1.00"
     },
+    "https://api.pkg-zone.com/download.php?tid=PPLA00008": {
+      "cover_url": "https://api.pkg-zone.com/images/PPLA00008/cover.png",
+      "min_fw": "5.05+",
+      "name": "PicoPlay",
+      "region": "HB-Store",
+      "release": "2026-11-14",
+      "size": "6619136",
+      "title_id": "PPLA00008",
+      "version": "1.01"
+    },
     "https://api.pkg-zone.com/download.php?tid=PPPP00002": {
       "cover_url": "https://api.pkg-zone.com/images/PPPP00002/cover.png",
       "min_fw": "5.05",
@@ -990,10 +1030,10 @@
       "min_fw": "5.05+",
       "name": "ezRemote Client",
       "region": "HB-Store",
-      "release": "2024-05-10",
-      "size": "52822016",
+      "release": "2026-11-14",
+      "size": "54722560",
       "title_id": "RMTC00001",
-      "version": "2.08"
+      "version": "2.11"
     },
     "https://api.pkg-zone.com/download.php?tid=SAAT29385": {
       "cover_url": "https://api.pkg-zone.com/images/SAAT29385/cover.png",
@@ -1020,9 +1060,9 @@
       "name": "Switchfin",
       "region": "HB-Store",
       "release": "2025-06-18",
-      "size": "58458112",
+      "size": "58523648",
       "title_id": "SFIN00000",
-      "version": "0.9.4"
+      "version": "0.9.5"
     },
     "https://api.pkg-zone.com/download.php?tid=SILI00009": {
       "cover_url": "https://api.pkg-zone.com/images/SILI00009/cover.png",
@@ -1066,19 +1106,19 @@
       "cover_url": "https://api.pkg-zone.com/images/SMSR00001/cover.png",
       "name": "Sonic SMS Remake",
       "region": "HB-Store",
-      "release": "2024-05-10",
+      "release": "2026-11-14",
       "size": "47972352",
       "title_id": "SMSR00001",
-      "version": "1.9.2"
+      "version": "1.9.2-ps4"
     },
     "https://api.pkg-zone.com/download.php?tid=SMSR00002": {
       "cover_url": "https://api.pkg-zone.com/images/SMSR00002/cover.png",
       "name": "Sonic SMS Remake 2",
       "region": "HB-Store",
-      "release": "2024-05-10",
+      "release": "2026-11-14",
       "size": "65863680",
       "title_id": "SMSR00002",
-      "version": "2.9.2"
+      "version": "2.9.2-ps4"
     },
     "https://api.pkg-zone.com/download.php?tid=SNEK99999": {
       "cover_url": "https://api.pkg-zone.com/images/SNEK99999/cover.png",

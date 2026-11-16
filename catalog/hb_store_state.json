@@ -171,6 +171,15 @@
       "source_md5": "24ed1f892a65829345f0461895bd33a2",
       "version": "1.00"
     },
+    "BREW00089": {
+      "app_type": "utility",
+      "name": "PS4 HDD Tools",
+      "platform_marker": "5.05+",
+      "release": "2026-11-14",
+      "size": "6619136",
+      "source_md5": "4cd86d5c760a38c97745f943e0d6558e",
+      "version": "1.3.2.5"
+    },
     "BREW00090": {
       "app_type": "hb game",
       "name": "OpenOrbis SDL Sample",
@@ -202,10 +211,10 @@
       "app_type": "utility",
       "name": "Brew",
       "platform_marker": "5.05",
-      "release": "2024-05-10",
+      "release": "2026-11-14",
       "size": "2752512",
       "source_md5": "0f49bfb6067f96d291778f7e27058abf",
-      "version": "1.00"
+      "version": "initial"
     },
     "BREW91909": {
       "app_type": "hb game",
@@ -215,6 +224,15 @@
       "size": "15597568",
       "source_md5": "d808b415baf947ff5e816caeb6268cfc",
       "version": "1.00"
+    },
+    "CBFD00064": {
+      "app_type": "game",
+      "name": "Conker's Bad Fur Day: Recompiled",
+      "platform_marker": "5.05+",
+      "release": "2026-11-14",
+      "size": "124059648",
+      "source_md5": "900b2496bf726b575dd76d9a5b6f64bc",
+      "version": "00.13"
     },
     "CDRR00001": {
       "app_type": "game",
@@ -337,10 +355,10 @@
       "app_type": "game",
       "name": "Hamer!! (PORT)",
       "platform_marker": "9.00, 9.60, 10.01, 11.00",
-      "release": "2025-11-26",
+      "release": "2026-11-14",
       "size": "235667456",
       "source_md5": "a5c2bc03667a3f36f8adb57c8abdf7e2",
-      "version": "1.00"
+      "version": "release-1.0"
     },
     "LAPY10004": {
       "app_type": "hb game",
@@ -447,7 +465,7 @@
       "platform_marker": "4.55+",
       "release": "2024-05-10",
       "size": "226033664",
-      "source_md5": "293412a68cdb6ad26fa8579e782cf330",
+      "source_md5": "471df0f3dc45cd4ae50ebeb7063be1db",
       "version": "1.00"
     },
     "LAPY10025": {
@@ -539,6 +557,15 @@
       "size": "7143424",
       "source_md5": "ddc683dc16fd1ede79017829c5f3475c",
       "version": "1.00"
+    },
+    "MARC00001": {
+      "app_type": "homebrew",
+      "name": "Hyper Neiva",
+      "platform_marker": "5.05+",
+      "release": "2026-11-14",
+      "size": "176422912",
+      "source_md5": "7dd54ded6049e92790e0b2cc5aafbdc3",
+      "version": "3.72"
     },
     "MARK00095": {
       "app_type": "game",
@@ -834,7 +861,7 @@
       "platform_marker": "4.55+, ps5_supported",
       "release": "2025-05-07",
       "size": "85458944",
-      "source_md5": null,
+      "source_md5": "688cd4339b09204dad1391b6ce465e20",
       "version": "1.10.0"
     },
     "PNES00001": {
@@ -863,6 +890,15 @@
       "size": "70254592",
       "source_md5": "ad07429e871a972df792766324becd54",
       "version": "1.00"
+    },
+    "PPLA00008": {
+      "app_type": "homebrew",
+      "name": "PicoPlay",
+      "platform_marker": "5.05+",
+      "release": "2026-11-14",
+      "size": "6619136",
+      "source_md5": "8ce3e1c98d3159788e93bdbfad7eb8ac",
+      "version": "1.01"
     },
     "PPPP00002": {
       "app_type": "emulator",
@@ -922,10 +958,10 @@
       "app_type": "utility",
       "name": "ezRemote Client",
       "platform_marker": "5.05+",
-      "release": "2024-05-10",
-      "size": "52822016",
-      "source_md5": null,
-      "version": "2.08"
+      "release": "2026-11-14",
+      "size": "54722560",
+      "source_md5": "8c1ae5411955ce5373d1a35a5393a694",
+      "version": "2.11"
     },
     "SAAT29385": {
       "app_type": "utility",
@@ -950,9 +986,9 @@
       "name": "Switchfin",
       "platform_marker": "5.05+",
       "release": "2025-06-18",
-      "size": "58458112",
-      "source_md5": null,
-      "version": "0.9.4"
+      "size": "58523648",
+      "source_md5": "536c8ede364f85e7b390cc10fbc65d2b",
+      "version": "0.9.5"
     },
     "SILI00009": {
       "app_type": "hb game",
@@ -994,19 +1030,19 @@
       "app_type": "hb game",
       "name": "Sonic SMS Remake",
       "platform_marker": "5.05+, ps5_supported",
-      "release": "2024-05-10",
+      "release": "2026-11-14",
       "size": "47972352",
       "source_md5": "bf2e6c5bd442025337cf3140eef65a65",
-      "version": "1.9.2"
+      "version": "1.9.2-ps4"
     },
     "SMSR00002": {
       "app_type": "hb game",
       "name": "Sonic SMS Remake 2",
       "platform_marker": "5.05+, ps5_supported",
-      "release": "2024-05-10",
+      "release": "2026-11-14",
       "size": "65863680",
       "source_md5": "5401ad78c0f60503fd13d8277bc09927",
-      "version": "2.9.2"
+      "version": "2.9.2-ps4"
     },
     "SNEK99999": {
       "app_type": "game",
@@ -1181,5 +1217,5 @@
     }
   },
   "schema": 1,
-  "source_db_md5": "75d409a53e78d6f6556e93a491220c3f"
+  "source_db_md5": "02ba401d17c2f5a9d67a727ed947545e"
 }
